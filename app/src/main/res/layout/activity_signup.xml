@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/leftRightMain"
     android:orientation="vertical"
-    tools:context="com.avans.easypay.SignupActivity">
+    tools:context="com.avans.easypaykassa.SignupActivity">
 
     <TextView
         android:layout_width="match_parent"

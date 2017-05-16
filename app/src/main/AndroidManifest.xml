@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.avans.easypay">
+    package="com.avans.easypaykassa">
 
     <uses-permission android:name="android.permission.NFC" />
     <uses-feature
@@ -15,12 +15,17 @@
         android:supportsRtl="true"
 
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainActivity" />
-        <activity android:name=".AssortmentActivity" />
-        <activity android:name=".CustomerDataActivity" />
-        <activity android:name=".AssistantDataActivity" />
-        <activity android:name=".AddProductActivity" />
-        <activity android:name=".ScanActivity">
+        <activity android:name="com.avans.easypaykassa.MainActivity" />
+        <activity android:name="com.avans.easypaykassa.AssortmentActivity" />
+        <activity android:name="com.avans.easypaykassa.CustomerDataActivity" />
+        <activity android:name="com.avans.easypaykassa.AssistantDataActivity" />
+        <activity android:name="com.avans.easypaykassa.AddProductActivity" />
+        <activity android:name="com.avans.easypaykassa.ScanActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
             </intent-filter>
@@ -28,28 +33,23 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
-        <activity android:name=".OverviewCurrentOrdersActivity" />
+        <activity android:name="com.avans.easypaykassa.OverviewCurrentOrdersActivity" />
 
         <activity
-            android:name=".TabbedViewActivity"
+            android:name="com.avans.easypaykassa.TabbedViewActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TabbedAlterAmountsActivity"
+            android:name="com.avans.easypaykassa.TabbedAlterAmountsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TabbedRemoveProductsActivity"
+            android:name="com.avans.easypaykassa.TabbedRemoveProductsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-
-            </intent-filter>
+        <activity android:name="com.avans.easypaykassa.LoginActivity">
         </activity>
-        <activity android:name=".SignupActivity" />
+        <activity android:name="com.avans.easypaykassa.SignupActivity" />
     </application>
 
 </manifest>

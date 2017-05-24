@@ -50,17 +50,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
 
-        //Setting balance in toolbar
-        if (balanceDAO.selectData().size() == 0){
-            Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-            TextView balanceToolbar = (TextView) toolbar.findViewById(R.id.toolbar_balance);
-            balanceToolbar.setText("€0.00");
-        }else{
-            Balance b = balanceDAO.selectData().get(balanceDAO.selectData().size() - 1);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-            TextView balanceToolbar = (TextView) toolbar.findViewById(R.id.toolbar_balance);
-            balanceToolbar.setText("€" + String.format("%.2f", b.getAmount()));
-        }
     }
 
     //OnClick

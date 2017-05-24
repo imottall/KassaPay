@@ -59,6 +59,15 @@ public class AssistantDataActivity extends AppCompatActivity implements View.OnC
             }
         });
 
+        ImageView scan = (ImageView) findViewById(R.id.go_to_scan);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AssistantDataActivity.this, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //initialise xml elements
         firstnameText = (TextView) findViewById(R.id.firstname_textview);
         lastnameText = (TextView) findViewById(R.id.lastname_textview);

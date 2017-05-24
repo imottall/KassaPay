@@ -40,6 +40,15 @@ public class CustomerDataActivity extends AppCompatActivity {
             }
         });
 
+        ImageView scan = (ImageView) findViewById(R.id.go_to_scan);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomerDataActivity.this, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

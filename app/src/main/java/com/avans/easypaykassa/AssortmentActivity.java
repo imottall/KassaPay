@@ -42,6 +42,15 @@ public class AssortmentActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
+        ImageView scan = (ImageView) findViewById(R.id.go_to_scan);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AssortmentActivity.this, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 //      Hier mogelijk tags doorgeven vanuit database om assortiment te filteren op locatie
     @Override

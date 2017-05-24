@@ -41,6 +41,15 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
                 startActivity(intent);
             }
         });
+
+        ImageView scan = (ImageView) findViewById(R.id.go_to_scan);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddProductActivity.this, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     public void onClick(View v) {
         switch(v.getId()) {

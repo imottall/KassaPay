@@ -44,8 +44,6 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ScanActivity.this, MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

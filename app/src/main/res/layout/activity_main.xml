@@ -4,45 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.avans.easypaykassa.MainActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dummy_number"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:layout_gravity="start"
-            android:id="@+id/toolbar_balance" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:id="@+id/toolbar_title" />
-
-        <ImageView
-            android:id="@+id/logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_exit_to_app_24dp"
-            android:layout_marginEnd="@dimen/leftRightMain"
-            android:contentDescription="@string/dummy_text"/>
-
-    </android.support.v7.widget.Toolbar>
+    
+    <include layout="@layout/header_main" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -79,15 +42,17 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:src="@drawable/ic_local_bar"
                         android:layout_gravity="center"/>
 
                     <TextView
+                        android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textSize="18dp"
                         android:text="@string/Products" />
                 </LinearLayout>
 
@@ -111,8 +76,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:src="@drawable/ic_list"
                         android:layout_gravity="center"/>
 
@@ -120,6 +85,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:textSize="18dp"
                         android:text="@string/Overview" />
                 </LinearLayout>
 
@@ -162,8 +129,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_credit_card"/>
 
@@ -171,6 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textSize="18dp"
                         android:text="@string/Customer" />
                 </LinearLayout>
 
@@ -195,8 +163,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_account_circle" />
 
@@ -204,6 +172,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textSize="18dp"
                         android:text="@string/account" />
                 </LinearLayout>
 

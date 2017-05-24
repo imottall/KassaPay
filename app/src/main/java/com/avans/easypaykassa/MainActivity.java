@@ -1,6 +1,7 @@
 package com.avans.easypaykassa;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,23 +45,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ImageView scan = (ImageView) findViewById(R.id.go_to_scan);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void onResume(){
         super.onResume();
 
-        //Setting balance in toolbar
-        if (balanceDAO.selectData().size() == 0){
-            Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-            TextView balanceToolbar = (TextView) toolbar.findViewById(R.id.toolbar_balance);
-            balanceToolbar.setText("€0.00");
-        }else{
-            Balance b = balanceDAO.selectData().get(balanceDAO.selectData().size() - 1);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-            TextView balanceToolbar = (TextView) toolbar.findViewById(R.id.toolbar_balance);
-            balanceToolbar.setText("€" + String.format("%.2f", b.getAmount()));
-        }
     }
 
     //OnClick

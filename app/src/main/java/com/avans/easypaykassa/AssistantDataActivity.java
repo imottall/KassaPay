@@ -48,13 +48,22 @@ public class AssistantDataActivity extends AppCompatActivity implements View.OnC
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        home = (ImageView) findViewById(R.id.home);
+        ImageView home = (ImageView) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(AssistantDataActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                finish();
+                startActivity(intent);
+            }
+        });
+
+        ImageView scan = (ImageView) findViewById(R.id.go_to_scan);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AssistantDataActivity.this, ScanActivity.class);
                 startActivity(intent);
             }
         });
@@ -101,18 +110,6 @@ public class AssistantDataActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onResume(){
         super.onResume();
-
-        //Setting balance in toolbar
-        if (balanceDAO.selectData().size() == 0){
-            Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-            TextView balanceToolbar = (TextView) toolbar.findViewById(R.id.toolbar_balance);
-            balanceToolbar.setText("€0.00");
-        }else{
-            Balance b = balanceDAO.selectData().get(balanceDAO.selectData().size() - 1);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-            TextView balanceToolbar = (TextView) toolbar.findViewById(R.id.toolbar_balance);
-            balanceToolbar.setText("€" + String.format("%.2f", b.getAmount()));
-        }
     }
 
     @Override

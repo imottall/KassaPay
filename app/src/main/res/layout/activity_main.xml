@@ -79,15 +79,17 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:src="@drawable/ic_local_bar"
                         android:layout_gravity="center"/>
 
                     <TextView
+                        android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textSize="18dp"
                         android:text="@string/Products" />
                 </LinearLayout>
 
@@ -111,8 +113,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:src="@drawable/ic_list"
                         android:layout_gravity="center"/>
 
@@ -120,6 +122,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textSize="18dp"
                         android:text="@string/Overview" />
                 </LinearLayout>
 
@@ -162,8 +165,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_credit_card"/>
 
@@ -171,6 +174,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textSize="18dp"
                         android:text="@string/Customer" />
                 </LinearLayout>
 
@@ -195,8 +199,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_account_circle" />
 
@@ -204,6 +208,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textSize="18dp"
                         android:text="@string/account" />
                 </LinearLayout>
 

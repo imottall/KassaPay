@@ -59,26 +59,26 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
     @Override
     public void onResume() {
         super.onResume();
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+//        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
 
-            if (!nfcAdapter.isEnabled()) {
-                new AlertDialog.Builder(this).setCancelable(true).setMessage("NFC staat momenteel uit. Aanzetten?")
-                        .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
-                                startActivity(settingsIntent);
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                finish();
-                            }
-                        })
-                        .create().show();
-            }
+//            if (!nfcAdapter.isEnabled()) {
+//                new AlertDialog.Builder(this).setCancelable(true).setMessage("NFC staat momenteel uit. Aanzetten?")
+//                        .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                dialog.dismiss();
+//                                Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
+//                                startActivity(settingsIntent);
+//                            }
+//                        })
+//                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                dialog.dismiss();
+//                                finish();
+//                            }
+//                        })
+//                        .create().show();
+//            }
 
     }
     @Override

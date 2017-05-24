@@ -15,17 +15,11 @@ public class LoginActivity extends AppCompatActivity {
 
         //initialise xml elements
         Button loginBtn = (Button) findViewById(R.id.login_btn);
-        Button signupBtn = (Button) findViewById(R.id.signup_btn);
     }
 
     public void loginBtn(View v) {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
-    }
-
-    public void signupBtn(View v) {
-        Intent i = new Intent(this, SignupActivity.class);
-        startActivity(i);
     }
 }

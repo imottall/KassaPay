@@ -49,7 +49,6 @@
 
         </intent-filter>
         </activity>
-        <activity android:name="com.avans.easypaykassa.SignupActivity" />
     </application>
 
 </manifest>

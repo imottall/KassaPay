@@ -31,6 +31,20 @@
                 android:contentDescription="@string/dummy_text"
                 android:orientation="vertical"
                 android:src="@drawable/ic_attach_money" />
+
+            <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center">
+
+            <ImageView
+                android:id="@+id/nfc_connected_checkmark_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/ic_check"/>
+
+        </FrameLayout>
         </FrameLayout>
 
     </RelativeLayout>
@@ -65,4 +79,7 @@
             android:gravity="center"
             android:text="@string/cancel" />
     </RelativeLayout>
+
+
+
 </LinearLayout>

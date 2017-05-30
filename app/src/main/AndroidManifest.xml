@@ -34,11 +34,7 @@
         <activity android:name="com.avans.easypaykassa.OverviewCurrentOrdersActivity" />
 
         <activity
-            android:name="com.avans.easypaykassa.TabbedViewActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.avans.easypaykassa.TabbedAlterAmountsActivity"
+            android:name="com.avans.easypaykassa.TabbedActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

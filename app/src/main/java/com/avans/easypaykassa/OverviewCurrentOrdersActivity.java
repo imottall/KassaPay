@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import com.avans.easypaykassa.DomainModel.Product;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class OverviewCurrentOrdersActivity extends AppCompatActivity {
         subtotal = (TextView) findViewById(R.id.subtotal_text_oco);
 
         for (int i = 0; i < 10; i++) {
-            Product product = new Product("Friet", "", 4.14,5);
+            Product product = new Product("Friet", 1.1, 4,5);
             mProductList.add(product);
         }
 

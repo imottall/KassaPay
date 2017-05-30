@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import com.avans.easypaykassa.DomainModel.Product;
+
 
 import java.util.ArrayList;
 
@@ -65,7 +67,7 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
 
     private void createTestProducts() {
         for (int i = 0; i < 20; i++) {
-            Product product = new Product("Product "+i,"" ,i);
+            Product product = new Product("Product "+i,i ,i);
             productList.add(product);
         }
     }

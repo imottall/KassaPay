@@ -3,11 +3,9 @@ package com.avans.easypaykassa;
 import android.content.Context;
 
 import java.text.DecimalFormat;
+import com.avans.easypaykassa.DomainModel.Product;
 import java.util.ArrayList;
 
-/**
- * Created by Sander on 4-5-2017.
- */
 
 public class ProductsTotal {
     private ArrayList<ArrayList<Product>> products;

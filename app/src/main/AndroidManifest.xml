@@ -41,7 +41,7 @@
             android:name="com.avans.easypaykassa.TabbedRemoveProductsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.avans.easypaykassa.LoginActivity">
+        <activity android:name="com.avans.easypaykassa.LoginActivity" android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

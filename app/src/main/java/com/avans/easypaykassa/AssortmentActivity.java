@@ -57,13 +57,8 @@ public class AssortmentActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.assortment_view:
-                Intent view = new Intent(context, TabbedViewActivity.class);
+                Intent view = new Intent(context, TabbedActivity.class);
                 startActivity(view);
-                break;
-
-            case R.id.assortment_alter:
-                Intent alter = new Intent(context, TabbedAlterAmountsActivity.class);
-                startActivity(alter);
                 break;
 
             case R.id.assortment_add:

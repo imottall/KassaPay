@@ -1,8 +1,5 @@
 package com.avans.easypaykassa;
 
-/**
- * Created by Sander on 5/2/2017.
- */
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.avans.easypaykassa.DomainModel.Product;
+
 
 import java.util.ArrayList;
 

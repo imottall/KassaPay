@@ -3,8 +3,8 @@ package com.avans.easypaykassa.ASyncTasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.avans.easypaykassa.DomainModel.Balance;
 import com.avans.easypaykassa.DomainModel.Customer;
+import com.avans.easypaykassa.DomainModel.Employee;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +18,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Date;
 
 /**
  * Created by Felix on 10-5-2017.
@@ -27,9 +26,9 @@ import java.util.Date;
 public class LoginTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = LoginTask.class.getSimpleName();
-    private OnCustomerAvailable listener = null;
+    private OnEmployeeAvailable listener = null;
 
-    public LoginTask(OnCustomerAvailable listener) {
+    public LoginTask(OnEmployeeAvailable listener) {
         this.listener = listener;
     }
 
@@ -84,30 +83,24 @@ public class LoginTask extends AsyncTask<String, Void, String> {
         try {
             json = new JSONObject(response);
             JSONArray items = json.getJSONArray("items");
-            JSONObject customer = items.optJSONObject(0);
+            JSONObject employee = items.optJSONObject(0);
 
-            if (customer != null) {
-                int customerId = customer.optInt("KlantId");
-                String username = customer.optString("Gebruikersnaam");
-                String password = customer.optString("Wachtwoord");
-                String email = customer.optString("Email");
-                String firstname = customer.optString("Voornaam");
-                String lastname = customer.optString("Achternaam");
-                String bankAccountNumber = customer.optString("Bankrekeningnummer");
-                float balanceInt = (float) customer.optInt("saldo");
-                float b = balanceInt/100;
-
-                String timeLog = customer.optString("TimeLog");
-
-                Balance balance = new Balance(b, new Date());
-                Customer c = new Customer(customerId, username, password,
-                        email, firstname, lastname, bankAccountNumber, balance, timeLog);
+            if (employee != null) {
+                int employeeId = employee.optInt("KassamedewerkerId");
+                String username = employee.optString("Gebruikersnaam");
+                String password = employee.optString("Wachtwoord");
+                String email = employee.optString("Email");
+                String firstname = employee.optString("Voornaam");
+                String lastname = employee.optString("Achternaam");
+                String bankAccountNumber = employee.optString("Bankrekeningnummer");
+                int hoursWorked = employee.optInt("UrenGewerkt");
 
                 //call back with customer that was been searched for
-                listener.onCustomerAvailable(c);
+                Employee e = new Employee(employeeId, username, password, email, firstname, lastname, bankAccountNumber, hoursWorked);
+                listener.onEmployeeAvailable(e);
             } else {
                 //return null if no customer was found
-                listener.onCustomerAvailable(null);
+                listener.onEmployeeAvailable(null);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -141,7 +134,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     }
 
     //call back interface
-    public interface OnCustomerAvailable {
-        void onCustomerAvailable(Customer customer);
+    public interface OnEmployeeAvailable {
+        void onEmployeeAvailable(Employee employee);
     }
 }

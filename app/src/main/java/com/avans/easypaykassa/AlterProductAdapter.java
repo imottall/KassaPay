@@ -10,12 +10,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import com.avans.easypaykassa.DomainModel.Product;
 
 import java.util.ArrayList;
 
-/**
- * Created by Sander on 5/2/2017.
- */
 
 public class AlterProductAdapter extends BaseAdapter {
     private Context context;
@@ -38,10 +36,6 @@ public class AlterProductAdapter extends BaseAdapter {
 
             products.add(new ArrayList<Product>());
         }
-
-        this.total = new ProductsTotal(context, products);
-
-
     }
     public AlterProductAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> productsList) {
         this.context = context;
@@ -77,7 +71,6 @@ public class AlterProductAdapter extends BaseAdapter {
             viewHolder.productImage = (ImageView) convertView.findViewById(R.id.product_image);
             viewHolder.productName = (TextView) convertView.findViewById(R.id.product_name);
             viewHolder.productPrice = (TextView) convertView.findViewById(R.id.product_price);
-            viewHolder.productSpinner = (Spinner) convertView.findViewById(R.id.product_spinner);
 
             convertView.setTag(viewHolder);
         }

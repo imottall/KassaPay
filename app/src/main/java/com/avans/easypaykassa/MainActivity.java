@@ -1,15 +1,12 @@
 package com.avans.easypaykassa;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.avans.easypaykassa.DomainModel.Balance;
 import com.avans.easypaykassa.SQLite.BalanceDAO;
 import com.avans.easypaykassa.SQLite.DAOFactory;
 import com.avans.easypaykassa.SQLite.SQLiteDAOFactory;
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void accountButton(View v) {
-        Intent intent = new Intent(this, AssistantDataActivity.class);
+        Intent intent = new Intent(this, UserDataActivity.class);
         startActivity(intent);
     }
 }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.avans.easypaykassa.AssistantDataActivity">
+    tools:context="com.avans.easypaykassa.EmployeeDataActivity">
 
     <include layout="@layout/header" />
 

@@ -20,7 +20,7 @@
         <activity android:name="com.avans.easypaykassa.MainActivity" />
         <activity android:name="com.avans.easypaykassa.AssortmentActivity" />
         <activity android:name="com.avans.easypaykassa.CustomerDataActivity" />
-        <activity android:name="com.avans.easypaykassa.AssistantDataActivity" />
+        <activity android:name="com.avans.easypaykassa.UserDataActivity" />
         <activity android:name="com.avans.easypaykassa.AddProductActivity" />
         <activity android:name="com.avans.easypaykassa.ScanActivity"
             android:launchMode="singleTop">

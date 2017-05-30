@@ -6,9 +6,10 @@ package com.avans.easypaykassa.DomainModel;
 
 public class Employee {
 
-    private int employeeId, hoursWorked;
+    private int employeeId;
     private String username, password, email,
             firstname, lastname, bankAccountNumber;
+    private int hoursWorked;
 
     public Employee(int employeeId, String username, String password,
                     String email, String firstname, String lastname, String bankAccountNumber, int hoursWorked) {
@@ -28,14 +29,6 @@ public class Employee {
 
     public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
-    }
-
-    public int getHoursWorked() {
-        return hoursWorked;
-    }
-
-    public void setHoursWorked(int hoursWorked) {
-        this.hoursWorked = hoursWorked;
     }
 
     public String getUsername() {
@@ -86,17 +79,25 @@ public class Employee {
         this.bankAccountNumber = bankAccountNumber;
     }
 
+    public int getHoursWorked() {
+        return hoursWorked;
+    }
+
+    public void setHoursWorked(int hoursWorked) {
+        this.hoursWorked = hoursWorked;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
                 "employeeId=" + employeeId +
-                ", hoursWorked=" + hoursWorked +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", bankAccountNumber='" + bankAccountNumber + '\'' +
+                ", hoursWorked=" + hoursWorked +
                 '}';
     }
 }

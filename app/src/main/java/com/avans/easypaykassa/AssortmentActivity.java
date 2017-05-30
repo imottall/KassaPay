@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 public class AssortmentActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button btn_view, btn_alter, btn_add, btn_remove;
+    private Button btn_view, btn_add, btn_remove;
     private Context context;
 
     @Override
@@ -20,8 +20,6 @@ public class AssortmentActivity extends AppCompatActivity implements View.OnClic
         context = getApplicationContext();
         btn_view = (Button) findViewById(R.id.assortment_view);
         btn_view.setOnClickListener(this);
-        btn_alter = (Button) findViewById(R.id.assortment_alter);
-        btn_alter.setOnClickListener(this);
         btn_add = (Button) findViewById(R.id.assortment_add);
         btn_add.setOnClickListener(this);
         btn_remove = (Button) findViewById(R.id.assortment_remove);

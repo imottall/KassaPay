@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
+        android:textSize="20dp"
         android:text="@string/tooltip_drinks_and_foods"
         android:gravity="center"/>
 
@@ -21,19 +22,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/assortment_view"
             android:layout_width="220dp"
             android:layout_height="62dp"
             android:text="@string/assortment_view_button" />
-
-        <Button
-            android:id="@+id/assortment_alter"
-            android:layout_width="220dp"
-            android:layout_height="62dp"
-            android:text="@string/assortment_alter_button"/>
 
         <Button
             android:id="@+id/assortment_add"

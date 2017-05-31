@@ -119,15 +119,15 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
         // on the UI thread.
 
         //show feedback on UI
-        checkMarkAnimFeedback();
+//        checkMarkAnimFeedback();
 
-//        if (number.equals("PAID")) {
-//            Log.i(TAG, "---------------------------------");
-//            Log.i(TAG, "Order status = PAID");
-//            Log.i(TAG, "---------------------------------");
-//            //update database, so that the order has a status of 'RECEIVED'
-//            new EasyPayAPIPUTConnector().execute(URL + orderNumber + "PAID");
-//        } else {
+        if (number.equals("PAID")) {
+            Log.i(TAG, "---------------------------------");
+            Log.i(TAG, "Order status = PAID");
+            Log.i(TAG, "---------------------------------");
+            //update database, so that the order has a status of 'RECEIVED'
+            new EasyPayAPIPUTConnector().execute(URL + orderNumber + "PAID");
+        } else {
             //update order status (in new thread)
             runOnUiThread(new Runnable() {
                 @Override
@@ -145,7 +145,7 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
                     startActivity(i);
                 }
             });
-//        }
+        }
     }
 
     public void checkMarkAnimFeedback() {

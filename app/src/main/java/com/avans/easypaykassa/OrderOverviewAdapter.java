@@ -1,6 +1,7 @@
 package com.avans.easypaykassa;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         Order order = getItem(position);
+        Log.i(this.getClass().getSimpleName(),""+order);
 
         //create an order item
         if(convertView == null) {
@@ -37,10 +39,17 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
         CheckBox orderStatusCheckbox = (CheckBox) convertView.findViewById(R.id.order_status_checkbox);
 
         //add content to the xml elements
-        orderNumberOutput.setText(order.getOrderNumber());
-        orderLocationOutput.setText(order.getOrderNumber());
-//        orderDateOutput.setText(order.get());
-        orderStatusCheckbox.setText(order.getOrderNumber());
+        orderNumberOutput.setText(order.getOrderNumber()+"");
+        orderLocationOutput.setText(order.getLocation());
+        orderDateOutput.setText(order.getDate().toString());
+        String status = order.getStatus();
+        if (status.equals("PAID")) {
+            orderStatusCheckbox.setChecked(true);
+        } else if (status.equals("WAITING")) {
+            orderStatusCheckbox.setChecked(false);
+        } else {
+            orderStatusCheckbox.setButtonDrawable((R.drawable.ic_x));
+        }
 
         return convertView;
     }

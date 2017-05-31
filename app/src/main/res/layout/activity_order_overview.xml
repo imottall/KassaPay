@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.avans.easypaykassa.OrderOverviewActivity">
 
     <include layout="@layout/header" />
 
@@ -49,5 +51,12 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
+    <ListView
+        tools:listitem="@layout/order_overview_list_item"
+        android:id="@+id/orderOverviewListview"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

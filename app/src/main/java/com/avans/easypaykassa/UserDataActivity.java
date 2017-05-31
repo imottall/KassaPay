@@ -17,6 +17,11 @@ import android.widget.Toast;
 
 import com.avans.easypaykassa.DomainModel.Employee;
 
+import org.iban4j.IbanFormatException;
+import org.iban4j.IbanUtil;
+import org.iban4j.InvalidCheckDigitException;
+import org.iban4j.UnsupportedCountryException;
+
 import java.util.regex.Pattern;
 
 import es.dmoral.toasty.Toasty;
@@ -132,6 +137,21 @@ public class UserDataActivity extends AppCompatActivity implements View.OnClickL
         return pattern.matcher(email).matches();
     }
 
+    private boolean validIBAN(String iban){
+        try{
+            IbanUtil.validate(iban);
+            Log.i("IBAN", "VALID IBAN");
+            return true;
+        }catch (IbanFormatException |
+                InvalidCheckDigitException |
+                UnsupportedCountryException e) {
+            Log.i("IBAN", "UNVALID IBAN");
+            return false;
+        }
+    }
+
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -186,16 +206,21 @@ public class UserDataActivity extends AppCompatActivity implements View.OnClickL
                     bankNumberInput.clearFocus();
                     bankNumberEditBtn.setBackgroundResource(R.drawable.ic_data_editable);
                     bankNumberEditable = false;
-                    if (!currentBankNumber.equals(bankNumberInput.getText().toString().trim())) {
+                    if (validIBAN(bankNumberInput.getText().toString().trim())){
                         putRequest = new EasyPayAPIPUTConnector();
-                        putRequest.execute("https://easypayserver.herokuapp.com/api/kassamedewerker/id="
+                        putRequest.execute("https://easypayserver.herokuapp.com/api/klant/id="
                                 + employee.getEmployeeId()+"/bank="+bankNumberInput.getText());
                         employeeEdit.putString("Bank", bankNumberInput.getText().toString());
                         employeeEdit.commit();
                         Toasty.success(this, "Bankrekeningnummer gewijzigd.", Toast.LENGTH_SHORT).show();
                         currentBankNumber = bankNumberInput.getText().toString().trim();
                     } else {
-                        Toasty.error(this, "Bankrekeningnummer is hetzelfde als huidig bankrekeningnummer", Toast.LENGTH_SHORT).show();
+                        Toasty.error(this, "Geen geldig bankrekeningnummer", Toast.LENGTH_SHORT).show();
+                        bankNumberInput.setEnabled(true);
+                        bankNumberInput.requestFocus();
+                        bankNumberEditBtn.setBackgroundResource(R.drawable.ic_check);
+                        bankNumberEditable = true;
+                        bankNumberInput.setText(currentBankNumber);
                     }
                 }
                 break;

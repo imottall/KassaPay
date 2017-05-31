@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.avans.easypaykassa.DomainModel.Product;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
@@ -69,8 +70,7 @@ public class DeleteProductAdapter extends BaseAdapter {
         Product p = (Product) productsList.get(position);
         String amount = p.getAmount() + "X";
         String price = ""+p.getProductPrice();
-        viewHolder.productImage.setImageResource(R.drawable.ic_local_dining_black_24dp);
-        viewHolder.productName.setText(p.getProductName());
+        Picasso.with(convertView.getContext()).load(p.getFullImageUrl()).into(viewHolder.productImage);        viewHolder.productName.setText(p.getProductName());
         viewHolder.productPrice.setText(price);
 
         return convertView;
@@ -81,7 +81,6 @@ public class DeleteProductAdapter extends BaseAdapter {
         private ImageView productImage;
         private TextView productName, productPrice;
         private CheckBox productcheck;
-
     }
 }
 

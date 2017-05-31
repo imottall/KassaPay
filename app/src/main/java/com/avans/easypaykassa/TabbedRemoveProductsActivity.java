@@ -1,6 +1,5 @@
 package com.avans.easypaykassa;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,8 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import com.avans.easypaykassa.DomainModel.Product;
-
-
 import java.util.ArrayList;
 
 public class TabbedRemoveProductsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,7 +28,6 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
     private DeleteProductAdapter product_adapter;
 
     private Button btn_confirm, btn_cancel;
-    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +37,11 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        productList = new ArrayList<>();
-        createTestProducts();
 
-        // Set up the ViewPager with the sections adapter.
+        Bundle bundle = getIntent().getExtras();
+
+        mSectionsPagerAdapter = new TabbedRemoveProductsActivity.SectionsPagerAdapter(getSupportFragmentManager());
+
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -55,38 +49,22 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
         tabLayout.setupWithViewPager(mViewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_local_bar_white_24dp);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_local_dining_white_24dp);
-
-        context = getApplicationContext();
-        btn_confirm = (Button) findViewById(R.id.alter_amount_confirm);
-        btn_confirm.setOnClickListener(this);
-        btn_cancel = (Button) findViewById(R.id.alter_amount_cancel);
-        btn_cancel.setOnClickListener(this);
-
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_local_drink_white_24dp);
         product_adapter = new DeleteProductAdapter(getApplicationContext(), getLayoutInflater(), productList);
-    }
 
-    private void createTestProducts() {
-        for (int i = 0; i < 20; i++) {
-            Product product = new Product("Product "+i,i ,i);
-            productList.add(product);
-        }
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_tabbed, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -94,10 +72,6 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -106,28 +80,28 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
 
         @Override
         public Fragment getItem(int position) {
-            //Laden van de juiste klasse als je op een tab klikt
-         switch(position) {
-             case 0:
-                 DrinksDeleteTab tab1 = new DrinksDeleteTab();
-                 //tab1.setTotalListener(totalListener);
-                 tab1.setProductAdapter(product_adapter);
-                 return tab1;
-             case 1:
-                 FoodDeleteTab tab2 = new FoodDeleteTab();
-                 //tab2.setTotalListener(totalListener);
-                 tab2.setProductAdapter(product_adapter);
-                 return tab2;
-             default:
-                 return null;
 
-         }
+            switch(position) {
+                case 0:
+                    DrinksDeleteTab tab1 = new DrinksDeleteTab();
+                    //tab1.setProductAdapter(product_adapter);
+                    return tab1;
+                case 1:
+                    FoodDeleteTab tab2 = new FoodDeleteTab();
+                    //tab2.setFoodAdapter(food_adapter);
+                    return tab2;
+                case 2:
+                    SodaDeleteTab tab3 = new SodaDeleteTab();
+                    return tab3;
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
             // Show 2 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
@@ -138,7 +112,7 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
                 case 1:
                     return "Eten";
                 case 2:
-                    return "SECTION 3";
+                    return "Frisdrank";
             }
             return null;
         }

@@ -42,12 +42,13 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/firstname_textview"
+                        android:id="@+id/add_product_name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="16"
+                        android:layout_marginRight="40dp"
                         android:gravity="center"
-                        android:text="Hassans warme broodjes"
+                        android:hint="naam"
                         android:textColor="#000"
                         android:textSize="14sp" />
 
@@ -74,13 +75,14 @@
                             android:gravity="center|start"/>
 
                         <EditText
-                            android:id="@+id/lastname_textview"
+                            android:id="@+id/add_product_price"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="16"
+                            android:layout_marginRight="40dp"
                             android:inputType="numberDecimal"
-                            android:text="@string/dummy_number"
                             android:textColor="#000"
+                            android:hint="prijs"
                             android:textSize="14sp"
                             android:gravity="center"/>
 
@@ -89,27 +91,27 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="10"
                             android:gravity="center|start"
-                            android:text="Aantal op voorraad"
+                            android:text="Categorie"
                             android:textColor="#000"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
-                        <EditText
-                            android:id="@+id/username_textview"
+                        <Spinner
+                            android:id="@+id/category_spinner"
+                            android:entries="@array/category_array"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="16"
-                            android:gravity="center"
-                            android:text="@string/dummy_number"
-                            android:textColor="#000"
-                            android:textSize="14sp" />
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:gravity="center|start"
+                            android:layout_weight="16"/>
 
                     </LinearLayout>
                 </LinearLayout>

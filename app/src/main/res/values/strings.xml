@@ -61,6 +61,11 @@
     <string name="new_password_userdata">Nieuw wachtwoord:</string>
     <string name="confirm_password_userdata">Wachtwoord bevestigen</string>
 
+    <string-array name="category_array">
+        <item>Drank</item>
+        <item>Frisdrank</item>
+        <item>Eten</item>
+    </string-array>
 
     <string-array name="spinner_array">
         <item>0</item>

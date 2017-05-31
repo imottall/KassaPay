@@ -79,6 +79,13 @@ public class AddProductActivity extends AppCompatActivity {
     public void addListenerOnButton() {
         spinner = (Spinner) findViewById(R.id.category_spinner);
         btn_add = (Button) findViewById(R.id.add_product_confirm);
+        btn_cancel = (Button) findViewById(R.id.add_product_cancel);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         btn_add.setOnClickListener(new View.OnClickListener() {
 

@@ -15,7 +15,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/scan_indicator_imageview1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -24,7 +24,7 @@
                 android:src="@drawable/ic_1494336533_wifipoint" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/scan_indicator_imageview2"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_gravity="center"
@@ -32,19 +32,16 @@
                 android:orientation="vertical"
                 android:src="@drawable/ic_attach_money" />
 
-            <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:foregroundGravity="center">
-
             <ImageView
-                android:id="@+id/nfc_connected_checkmark_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ic_check"/>
+                android:id="@+id/checkmark_imageview"
+                android:layout_width="440dp"
+                android:layout_height="440dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/dummy_text"
+                android:orientation="vertical"
+                android:visibility="invisible"
+                android:src="@drawable/ic_check" />
 
-        </FrameLayout>
         </FrameLayout>
 
     </RelativeLayout>

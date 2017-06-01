@@ -42,7 +42,7 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable{
         productList = new ArrayList<>();
 //        getProductItems();
 //        getOrder(8);
-        listview = (ListView) findViewById(R.id.order_products_detailed);
+        listview = (ListView) findViewById(R.id.order_detailed_list);
 
         LayoutInflater inflater = LayoutInflater.from(this);
         adapter = new ProductAdapter(this, inflater, productList);

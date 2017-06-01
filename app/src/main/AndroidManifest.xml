@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".OrderOverviewActivity" />
-        <activity android:name=".OrderOverviewDetailActivity"></activity>
+        <activity android:name=".OrderOverviewDetailActivity" />
     </application>
 
 </manifest>

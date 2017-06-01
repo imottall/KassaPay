@@ -70,24 +70,6 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
     public void onResume() {
         super.onResume();
         enableReaderMode();
-
-//        if (!nfc.isEnabled()) {
-//            new AlertDialog.Builder(this).setCancelable(true).setMessage("NFC staat momenteel uit. Aanzetten?")
-//                    .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            dialog.dismiss();
-//                            Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
-//                            startActivity(settingsIntent);
-//                        }
-//                    })
-//                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            dialog.dismiss();
-//                            finish();
-//                        }
-//                    })
-//                    .create().show();
-//        }
     }
 
     @Override
@@ -119,9 +101,6 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
         // on the UI thread.
 
         if (number.equals("PAID")) {
-            Log.i(TAG, "---------------------------------");
-            Log.i(TAG, "Order status = PAID");
-            Log.i(TAG, "---------------------------------");
             //update database, so that the order has a status of 'RECEIVED'
             new EasyPayAPIPUTConnector().execute(URL + orderNumber + "PAID");
         } else {
@@ -130,10 +109,6 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
                 @Override
                 public void run() {
                     orderNumber = Integer.parseInt(number);
-
-                    messageOutput.setText("Bestelling nummer: " + orderNumber + " ontvangen.");
-                    Log.i(TAG, "Put request wordt gedaan met de volgende URL");
-                    Log.i(TAG, URL + orderNumber);
 
                     //update database, so that the order has a status of 'PAID'
                     new EasyPayAPIPUTConnector().execute(URL + orderNumber + "/RECEIVED");

@@ -118,9 +118,6 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
         // This callback is run on a background thread, but updates to UI elements must be performed
         // on the UI thread.
 
-        //show feedback on UI
-//        checkMarkAnimFeedback();
-
         if (number.equals("PAID")) {
             Log.i(TAG, "---------------------------------");
             Log.i(TAG, "Order status = PAID");
@@ -146,29 +143,5 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
                 }
             });
         }
-    }
-
-    public void checkMarkAnimFeedback() {
-        //fade out scan image
-        Animation fadeOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_fade_out);
-        scanImage1.setAnimation(fadeOut);
-        scanImage2.setAnimation(fadeOut);
-
-        //fade in check mark image
-        Animation fadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_fade_in);
-        checkmarkImage.startAnimation(fadeIn);
-        checkmarkImage.setVisibility(View.VISIBLE);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //animate check mark image
-                scanImage1.setVisibility(View.GONE);
-                scanImage2.setVisibility(View.GONE);
-                Animation animationClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_clockwise);
-                checkmarkImage.startAnimation(animationClockwise);
-            }
-        }, 500);
     }
 }

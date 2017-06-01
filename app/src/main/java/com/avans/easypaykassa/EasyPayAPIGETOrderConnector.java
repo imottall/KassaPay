@@ -100,7 +100,7 @@ public class EasyPayAPIGETOrderConnector extends AsyncTask<String, Void, String>
             int orderID = order.optInt("BestellingId");
             int customerID = order.optInt("KlantId");
             String date = order.optString("Datum");
-            String location = order.optString("locatieID");
+            String location = order.optInt("locatieId")+"";
             int orderNumber = order.optInt("bestellingNummer");
             String status = order.optString("Status");
 

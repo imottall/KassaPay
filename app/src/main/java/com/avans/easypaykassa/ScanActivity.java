@@ -100,23 +100,19 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
         // This callback is run on a background thread, but updates to UI elements must be performed
         // on the UI thread.
 
-        if (number.equals("PAID")) {
-            //update database, so that the order has a status of 'RECEIVED'
-            new EasyPayAPIPUTConnector().execute(URL + orderNumber + "PAID");
-        } else {
-            //update order status (in new thread)
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    orderNumber = Integer.parseInt(number);
+        //update order status (in new thread)
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                orderNumber = Integer.parseInt(number);
 
-                    //update database, so that the order has a status of 'PAID'
-                    new EasyPayAPIPUTConnector().execute(URL + orderNumber + "/RECEIVED");
+                //update database, so that the order has a status of 'PAID'
+                new EasyPayAPIPUTConnector().execute(URL + orderNumber + "/RECEIVED");
 
-                    Intent i = new Intent(getApplicationContext(), OrderOverviewDetailActivity.class);
-                    startActivity(i);
-                }
-            });
-        }
+                Intent i = new Intent(getApplicationContext(), OrderOverviewDetailActivity.class);
+                i.putExtra("ordernumber", orderNumber);
+                startActivity(i);
+            }
+        });
     }
 }

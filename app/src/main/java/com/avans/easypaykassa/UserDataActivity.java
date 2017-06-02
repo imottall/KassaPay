@@ -69,11 +69,18 @@ public class UserDataActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         home = (ImageView) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UserDataActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        ImageView scan = (ImageView) findViewById(R.id.go_to_scan);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserDataActivity.this, ScanActivity.class);
                 startActivity(intent);
             }
         });
@@ -100,7 +107,7 @@ public class UserDataActivity extends AppCompatActivity implements View.OnClickL
         } else {
             bankNumberInput.setText(employee.getBankAccountNumber());
         }
-        hoursWorkedInput.setText(employee.getHoursWorked()+"");
+        hoursWorkedInput.setText(employee.getHoursWorked() + "");
 
         emailEditBtn = (ImageView) findViewById(R.id.email_edit_btn);
         bankNumberEditBtn = (ImageView) findViewById(R.id.banknumber_edit_btn);
@@ -137,20 +144,18 @@ public class UserDataActivity extends AppCompatActivity implements View.OnClickL
         return pattern.matcher(email).matches();
     }
 
-    private boolean validIBAN(String iban){
-        try{
+    private boolean validIBAN(String iban) {
+        try {
             IbanUtil.validate(iban);
             Log.i("IBAN", "VALID IBAN");
             return true;
-        }catch (IbanFormatException |
+        } catch (IbanFormatException |
                 InvalidCheckDigitException |
                 UnsupportedCountryException e) {
             Log.i("IBAN", "UNVALID IBAN");
             return false;
         }
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -206,10 +211,10 @@ public class UserDataActivity extends AppCompatActivity implements View.OnClickL
                     bankNumberInput.clearFocus();
                     bankNumberEditBtn.setBackgroundResource(R.drawable.ic_data_editable);
                     bankNumberEditable = false;
-                    if (validIBAN(bankNumberInput.getText().toString().trim())){
+                    if (validIBAN(bankNumberInput.getText().toString().trim())) {
                         putRequest = new EasyPayAPIPUTConnector();
                         putRequest.execute("https://easypayserver.herokuapp.com/api/klant/id="
-                                + employee.getEmployeeId()+"/bank="+bankNumberInput.getText());
+                                + employee.getEmployeeId() + "/bank=" + bankNumberInput.getText());
                         employeeEdit.putString("Bank", bankNumberInput.getText().toString());
                         employeeEdit.commit();
                         Toasty.success(this, "Bankrekeningnummer gewijzigd.", Toast.LENGTH_SHORT).show();

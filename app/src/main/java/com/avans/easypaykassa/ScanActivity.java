@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avans.easypaykassa.DomainModel.Order;
 import com.avans.easypaykassa.HCE.LoyaltyCardReader;
 
 /**
@@ -110,7 +111,9 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
                 new EasyPayAPIPUTConnector().execute(URL + orderNumber + "/RECEIVED");
 
                 Intent i = new Intent(getApplicationContext(), OrderOverviewDetailActivity.class);
-                i.putExtra("ordernumber", orderNumber);
+                Order order = new Order();
+                order.setOrderNumber(orderNumber);
+                i.putExtra("order", order);
                 startActivity(i);
             }
         });

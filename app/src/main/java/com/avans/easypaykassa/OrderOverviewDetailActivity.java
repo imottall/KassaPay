@@ -51,14 +51,14 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
         listview.setAdapter(adapter);
     }
 
-    public void getProductItems() {
-        String[] URL = {
-                "https://easypayserver.herokuapp.com/api/product/food"
-                //bij andere locaties zal er iets met de endpoint moeten worden aangepast: "link/api/product/" + tabname
-        };
-
-        new EasyPayAPIConnector(this).execute(URL);
-    }
+//    public void getProductItems() {
+//        String[] URL = {
+//                "https://easypayserver.herokuapp.com/api/product/food"
+//                //bij andere locaties zal er iets met de endpoint moeten worden aangepast: "link/api/product/" + tabname
+//        };
+//
+//        new EasyPayAPIConnector(this).execute(URL);
+//    }
 
     private void getOrder(int orderNumber){
 
@@ -70,9 +70,9 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
     @Override
     public void onProductAvailable(Product product) {
         price = 0;
-        Log.i("", "ProductAvailable: " + product);
+//        Log.i("", "ProductAvailable: " + product);
         productList.add(product);
-        Log.i("", "onProductAvailable: " + productList);
+//        Log.i("", "onProductAvailable: " + productList);
 
         for (int i = 0; i < productList.size() ; i++) {
            price = price + productList.get(i).getProductPrice();
@@ -95,6 +95,8 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
             String[] URL = {
                     "https://easypayserver.herokuapp.com/api/product/" + order.getProductsIDs().get(i)
             };
+
+            Log.i("URL", URL[0]);
 
             new EasyPayAPIConnector(this).execute(URL);
         }

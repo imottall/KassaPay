@@ -106,7 +106,7 @@ public class EasyPayAPIGETOrderConnector extends AsyncTask<String, Void, String>
 
             for (int i = 0; i < items.length(); i++) {
                 JSONObject orderForProducts = items.getJSONObject(i);
-                products.add(orderForProducts.optInt("ProductID"));
+                products.add(orderForProducts.optInt("ProductId"));
             }
 
             Order o = new Order(orderID, customerID, new Date(), products,  location, orderNumber, status);

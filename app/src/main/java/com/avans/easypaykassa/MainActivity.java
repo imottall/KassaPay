@@ -60,8 +60,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //OnClick
-    public void orderButton(View v) {
+    public void assortButton(View v) {
         Intent intent = new Intent(this, AssortmentActivity.class);
+        startActivity(intent);
+    }
+
+    public void orderButton(View v){
+        Intent intent= new Intent(this, OrderOverviewActivity.class);
         startActivity(intent);
     }
 

@@ -1,6 +1,8 @@
 package com.avans.easypaykassa;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +21,17 @@ import java.util.ArrayList;
 
 public class OrderOverviewAdapter extends ArrayAdapter<Order> {
 
+    private SharedPreferences locationPref;
+
     public OrderOverviewAdapter(Context context, ArrayList<Order> orders) {
         super(context, 0, orders);
+        locationPref = context.getSharedPreferences(LoginActivity.PREFERENCELOCATION, context.MODE_PRIVATE);
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         Order order = getItem(position);
         Log.i(this.getClass().getSimpleName(),""+order);
+
 
         //create an order item
         if(convertView == null) {
@@ -40,7 +46,7 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
 
         //add content to the xml elements
         orderNumberOutput.setText(order.getOrderNumber()+"");
-        orderLocationOutput.setText(order.getLocation());
+        orderLocationOutput.setText(locationPref.getString(order.getLocation(), "Geen Locatie"));
         orderDateOutput.setText(order.getDate().toString());
         String status = order.getStatus();
         if (status.equals("PAID")) {

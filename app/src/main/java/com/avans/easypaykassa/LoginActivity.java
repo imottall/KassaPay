@@ -13,8 +13,12 @@ import android.widget.Toast;
 
 import com.avans.easypaykassa.ASyncTasks.LoginTask;
 import com.avans.easypaykassa.DomainModel.Employee;
+import com.avans.easypaykassa.DomainModel.Location;
 
-public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmployeeAvailable {
+import java.util.ArrayList;
+
+public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmployeeAvailable,
+        EasyPayAPILocationConnector.OnLocationAvailable {
 
     private String TAG = this.getClass().getSimpleName();
 
@@ -35,8 +39,13 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
     private SharedPreferences employeePref;
     private SharedPreferences.Editor employeeEdit;
 
-    public static final String PREFERENCEEMPLOYEE = "EMPLOYEE";
+    private SharedPreferences locationPref;
+    private SharedPreferences.Editor locationEdit;
 
+    public static final String PREFERENCEEMPLOYEE = "EMPLOYEE";
+    public static final String PREFERENCELOCATION = "LOCATION";
+
+    private EasyPayAPILocationConnector getLocations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,11 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
         //initialise SharedPreferences objects
         employeePref = getSharedPreferences(PREFERENCEEMPLOYEE, Context.MODE_PRIVATE);
         employeeEdit = employeePref.edit();
+
+        locationPref = getSharedPreferences(PREFERENCELOCATION, Context.MODE_PRIVATE);
+        locationEdit = locationPref.edit();
+
+        getLocations = new EasyPayAPILocationConnector(this);
     }
 
     public void loginBtn(View v) {
@@ -79,9 +93,6 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
     public void onEmployeeAvailable(Employee employee) {
         this.employee = employee;
 
-        //end ProgressDialog
-        pd.cancel();
-
         //LoginTask did not return a employee, so username = invalid
         if (employee == null) {
             Toast.makeText(LoginActivity.this, "Gebruikersnaam bestaat niet.", Toast.LENGTH_LONG).show();
@@ -89,7 +100,6 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
 
             //username and password input is a valid employee
         } else if (username.equals(employee.getUsername()) && password.equals(employee.getPassword())) {
-            Intent i = new Intent(LoginActivity.this, MainActivity.class);
             employeeEdit.putInt("ID", employee.getEmployeeId());
             employeeEdit.putString("Username", employee.getUsername());
             employeeEdit.putString("Password", employee.getUsername());
@@ -99,13 +109,34 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
             employeeEdit.putString("Bank", employee.getBankAccountNumber());
             employeeEdit.putInt("HoursWorked", employee.getHoursWorked());
             employeeEdit.commit();
-            startActivity(i);
-            finish();
+            getLocationSharedPreference();
 
             //username exists, but password is invalid
         } else {
             Toast.makeText(LoginActivity.this, "Gegevens zijn onjuist.", Toast.LENGTH_LONG).show();
             passwordInput.setText("");
         }
+    }
+
+    public void getLocationSharedPreference(){
+
+        String URL = "https://easypayserver.herokuapp.com/api/locatie";
+        getLocations.execute(URL);
+    }
+
+    @Override
+    public void onLocationAvailable(ArrayList<Location> locations) {
+
+        for (int i = 0; i < locations.size(); i++) {
+            locationEdit.putString(locations.get(i).getId()+"", locations.get(i).getName());
+        }
+        locationEdit.commit();
+
+        //end ProgressDialog
+        pd.cancel();
+
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }

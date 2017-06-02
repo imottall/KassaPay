@@ -14,28 +14,24 @@ import com.avans.easypaykassa.DomainModel.Product;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class OrderOverviewActivity extends AppCompatActivity implements ListView.OnItemClickListener {
+public class OrderOverviewActivity extends AppCompatActivity implements ListView.OnItemClickListener,
+        EasyPayAPIOrdersConnector.OnOrdersAvailable{
 
     private OrderOverviewAdapter adapter;
     private ArrayList<Order> orders = new ArrayList<>();
+    private EasyPayAPIOrdersConnector get;
+    private ArrayList<Integer> orderNumbers = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_overview);
 
-        //-------------------
-        //test order objects
-        ArrayList<Product> products = new ArrayList<>();
-        //list of products
-        products.add(new Product("Schoenzool", 3.20, 1));
-        products.add(new Product("Oreo", 1.40, 2));
-        products.add(new Product("Skippiebal", 12.99, 3));
-        //list of orders, including the product list
-        orders.add(new Order(1, 1, new Date(), "Pizzahut", products, 1, "WAITING"));
-        orders.add(new Order(1, 2, new Date(), "Hotdogkraam", products, 2, "PAID"));
-        orders.add(new Order(1, 3, new Date(), "Pizzahut", products, 3, "CANCELED"));
-        //-------------------
+
+        get = new EasyPayAPIOrdersConnector(this);
+        get.execute("https://easypayserver.herokuapp.com/api/bestelling/");
+
 
         //initialise listview
         ListView orderListview = (ListView) findViewById(R.id.orderOverviewListview);
@@ -45,6 +41,25 @@ public class OrderOverviewActivity extends AppCompatActivity implements ListView
 
         //set listener(s)
         orderListview.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onOrdersAvailable(Order order) {
+
+        Log.i("ORDER", order.toString());
+
+        if (!orderNumbers.isEmpty()){
+            if (!orderNumbers.contains(order.getOrderNumber())){
+                orderNumbers.add(order.getOrderNumber());
+                orders.add(order);
+                adapter.notifyDataSetChanged();
+            } else
+                return;
+        } else {
+            orders.add(order);
+            orderNumbers.add(order.getOrderNumber());
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

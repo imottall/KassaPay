@@ -55,7 +55,6 @@
     <ListView
         tools:listitem="@layout/order_overview_list_item"
         android:id="@+id/orderOverviewListview"
-        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

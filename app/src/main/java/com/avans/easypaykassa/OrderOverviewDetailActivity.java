@@ -32,18 +32,15 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_overview_detail);
 
+        Order order = (Order) getIntent().getSerializableExtra("order");
+
         total_price = (TextView) findViewById(R.id.order_price_detailed);
         id = (TextView) findViewById(R.id.order_number_detailed);
         location = (TextView) findViewById(R.id.order_location_detailed);
         date = (TextView) findViewById(R.id.order_date_detailed);
 
-//        id.setText(""+1);
-//        location.setText("Pizza paleis");
-//        date.setText(new Date().toString());
-
         productList = new ArrayList<>();
-//        getProductItems();
-        getOrder(8);
+        getOrder(order.getOrderNumber());
         listview = (ListView) findViewById(R.id.order_detailed_list);
 
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -51,14 +48,6 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
         listview.setAdapter(adapter);
     }
 
-//    public void getProductItems() {
-//        String[] URL = {
-//                "https://easypayserver.herokuapp.com/api/product/food"
-//                //bij andere locaties zal er iets met de endpoint moeten worden aangepast: "link/api/product/" + tabname
-//        };
-//
-//        new EasyPayAPIConnector(this).execute(URL);
-//    }
 
     private void getOrder(int orderNumber){
 
@@ -70,9 +59,7 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
     @Override
     public void onProductAvailable(Product product) {
         price = 0;
-//        Log.i("", "ProductAvailable: " + product);
         productList.add(product);
-//        Log.i("", "onProductAvailable: " + productList);
 
         for (int i = 0; i < productList.size() ; i++) {
            price = price + productList.get(i).getProductPrice();
@@ -85,11 +72,12 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
     @Override
     public void onOrdersAvailable(Order order) {
 
+        //Stop loading screen
+
         id.setText(order.getOrderNumber()+"");
         location.setText(order.getLocation());
         date.setText(order.getDate().toString());
 
-        Log.i(this.getClass().getSimpleName(), "Amount of products: " + order.getProductsIDs().size());
         for (int i = 0; i < order.getProductsIDs().size() ; i++) {
 
             String[] URL = {
@@ -105,10 +93,8 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
     @Override
     public void onAccountReceived(String msg) {
         if (msg.equals("PAID")) {
-            //get orderNumber that has been received from NFC scan
             int orderNumber = Integer.parseInt(getIntent().getStringExtra("orderNumber"));
             Log.i(this.getClass().getSimpleName(), "RECEIVED ORDERNR: " + orderNumber);
-            //update database, so that the order has a status of 'PAID'
             new EasyPayAPIPUTConnector().execute(URL + orderNumber + "/PAID");
         }
     }

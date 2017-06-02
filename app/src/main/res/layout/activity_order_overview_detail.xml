@@ -83,7 +83,7 @@
         tools:listitem="@layout/listview_order_row_detailed" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/status_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
@@ -91,6 +91,18 @@
         android:layout_marginBottom="8dp"
         android:buttonTint="@color/colorPrimary"
         android:clickable="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/order_detailed_list" />
+
+    <ImageView
+        android:id="@+id/status_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_x"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/order_detailed_list" />
 
 </android.support.constraint.ConstraintLayout>

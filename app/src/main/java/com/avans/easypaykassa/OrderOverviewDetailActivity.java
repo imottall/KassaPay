@@ -13,17 +13,22 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.avans.easypaykassa.DomainModel.Order;
 import com.avans.easypaykassa.DomainModel.Product;
 import com.avans.easypaykassa.HCE.LoyaltyCardReader;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.GregorianCalendar;
+
+import es.dmoral.toasty.Toasty;
 
 public class OrderOverviewDetailActivity extends AppCompatActivity implements EasyPayAPIConnector.OnProductAvailable,
-EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback {
+        EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback {
 
     private String TAG = this.getClass().getSimpleName();
 
@@ -31,6 +36,8 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
     private ListView listview;
     private TextView total_price, id, location, date;
     private CheckBox checkbox;
+    private ImageView xCheckbox;
+
     private double price;
     private ProductAdapter adapter;
 
@@ -47,6 +54,11 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
     //ProgressDialog
     ProgressDialog pd;
 
+    //variable to get rid of difference in DB order time and actual Dutch time
+    private long dateInMillis;
+    private int timeDiff;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +66,9 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
 
         //get orderNumber that has either been received by OrderOverviewActivity or from NFC scan
         order = (Order) getIntent().getSerializableExtra("order");
+        dateInMillis = getIntent().getLongExtra("dateInMillis", 0);
+
+        Log.i("DATE IN LONG", dateInMillis+"");
 
         //initialise views
         listview = (ListView) findViewById(R.id.order_detailed_list);
@@ -61,7 +76,8 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
         id = (TextView) findViewById(R.id.order_number_detailed);
         location = (TextView) findViewById(R.id.order_location_detailed);
         date = (TextView) findViewById(R.id.order_date_detailed);
-        checkbox = (CheckBox) findViewById(R.id.checkBox);
+        checkbox = (CheckBox) findViewById(R.id.status_checkbox);
+        xCheckbox = (ImageView) findViewById(R.id.status_imageview);
 
         //initalise toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -70,7 +86,7 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
         ImageView home = (ImageView) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 Intent intent = new Intent(OrderOverviewDetailActivity.this, MainActivity.class);
                 finish();
                 startActivity(intent);
@@ -85,7 +101,7 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
             }
         });
 
-        //initialise productlist & fill it with data
+        //initialise productlist & fill it with data from DB
         productList = new ArrayList<>();
         getOrder(order.getOrderNumber());
 
@@ -109,7 +125,7 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
         date.setText("");
     }
 
-    private void getOrder(int orderNumber){
+    private void getOrder(int orderNumber) {
         //get
         String URL = "https://easypayserver.herokuapp.com/api/bestelling/" + orderNumber;
         new EasyPayAPIGETOrderConnector(this).execute(URL);
@@ -120,8 +136,8 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
         price = 0;
         productList.add(product);
 
-        for (int i = 0; i < productList.size() ; i++) {
-           price = price + productList.get(i).getProductPrice();
+        for (int i = 0; i < productList.size(); i++) {
+            price = price + productList.get(i).getProductPrice();
         }
 
         total_price.setText("€" + price);
@@ -130,19 +146,21 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
 
     @Override
     public void onOrdersAvailable(Order order) {
-
-        pd.cancel();
         //Stop loading screen
+        pd.cancel();
 
-        id.setText(order.getOrderNumber()+"");
+        Log.i("DetailDateFORMAT", order.getDate()+"");
+        id.setText(order.getOrderNumber() + "");
         location.setText(order.getLocation());
-        date.setText(order.getDate().toString());
+        date.setText(formatDate(dateInMillis));
+        //check order status, show adequate view (x/unchecked checkmark/checked checkmark)
+        checkStatusForCheckbox(order.getStatus());
 
-        for (int i = 0; i < order.getProductsIDs().size() ; i++) {
+        //get all products from this order from DB
+        for (int i = 0; i < order.getProductsIDs().size(); i++) {
             String[] URL = {
                     "https://easypayserver.herokuapp.com/api/product/" + order.getProductsIDs().get(i)
             };
-            Log.i("URL", URL[0]);
             new EasyPayAPIConnector(this).execute(URL);
         }
     }
@@ -179,12 +197,43 @@ EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback
     @Override
     public void onAccountReceived(String msg) {
         if (msg.equals("PAID")) {
+            //if order is paid, check the checkbox
+            checkbox.setChecked(true);
+
             //update database, so that the order has a status of 'PAID'
             new EasyPayAPIPUTConnector().execute(URL + order.getOrderNumber() + "/PAID");
             Log.i(this.getClass().getSimpleName(), "RECEIVED ORDERNR: " + order.getOrderNumber());
 
-            //if order is paid, check the checkbox
-            checkbox.setChecked(true);
+            //show toasty
+            Toasty.success(OrderOverviewDetailActivity.this, "Bestelling is betaald 2/2.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public String formatDate(long dateInMillis) {
+        //convert long dateInMillis back to Date
+        Date date = new Date(dateInMillis);
+
+        //calculate timedifference
+
+
+        //format the date
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm - dd/MM/yyyy");
+        return sdf.format(date);
+    }
+
+    public void checkStatusForCheckbox(String status) {
+        switch (status) {
+            case "PAID":
+                checkbox.setChecked(true);
+                checkbox.setVisibility(View.VISIBLE);
+                break;
+            case "WAITING":
+                checkbox.setVisibility(View.VISIBLE);
+                checkbox.setChecked(false);
+                break;
+            default:
+                xCheckbox.setVisibility(View.VISIBLE);
+                break;
         }
     }
 }

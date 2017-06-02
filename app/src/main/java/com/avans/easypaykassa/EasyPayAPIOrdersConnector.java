@@ -5,6 +5,10 @@ import android.util.Log;
 
 import com.avans.easypaykassa.DomainModel.Order;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,12 +98,12 @@ public class EasyPayAPIOrdersConnector extends AsyncTask<String, Void, String> {
             ArrayList<Integer> products = new ArrayList<>();
 
             //get first product
-            for (int i = 0; i < items.length() ; i++) {
+            for (int i = 0; i < items.length(); i++) {
                 JSONObject order = items.getJSONObject(i);
                 int orderID = order.optInt("BestellingId");
                 int customerID = order.optInt("KlantId");
                 String date = order.optString("Datum");
-                String location = order.optInt("locatieId")+"";
+                String location = order.optInt("locatieId") + "";
                 int orderNumber = order.optInt("bestellingNummer");
                 String status = order.optString("Status");
 
@@ -108,7 +112,7 @@ public class EasyPayAPIOrdersConnector extends AsyncTask<String, Void, String> {
                     products.add(orderForProducts.optInt("ProductId"));
                 }
 
-                Order o = new Order(orderID, customerID, new Date(), products,  location, orderNumber, status);
+                Order o = new Order(orderID, customerID, parseDate(date), products, location, orderNumber, status);
 
                 listener.onOrdersAvailable(o);
             }
@@ -141,6 +145,15 @@ public class EasyPayAPIOrdersConnector extends AsyncTask<String, Void, String> {
             }
         }
         return sb.toString();
+    }
+
+    //parse ISO8601 time format to Date object
+    public Date parseDate(String unparsedDate) {
+        DateTimeZone dtz = DateTimeZone.forID("Europe/London");
+        DateTime dt = ISODateTimeFormat.dateTime().parseDateTime(unparsedDate);
+//        Log.i("TIMEFORMATTING", "PARSED = " + dt+"");
+        Log.i("TIMEFORMATTING", "DATE = " + dt.toDate()+"");
+        return dt.toDate();
     }
 
     //call back interface

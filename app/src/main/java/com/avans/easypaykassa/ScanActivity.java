@@ -13,9 +13,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.avans.easypaykassa.DomainModel.Order;
 import com.avans.easypaykassa.HCE.LoyaltyCardReader;
+
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by TB on 5/6/2017.
@@ -110,11 +113,14 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
                 //update database, so that the order has a status of 'PAID'
                 new EasyPayAPIPUTConnector().execute(URL + orderNumber + "/RECEIVED");
 
+                //proceed to OrderOverviewDetailActivity and send order intent extra
                 Intent i = new Intent(getApplicationContext(), OrderOverviewDetailActivity.class);
                 Order order = new Order();
                 order.setOrderNumber(orderNumber);
                 i.putExtra("order", order);
                 startActivity(i);
+                Toasty.success(ScanActivity.this, "Bestelling is ontvangen 1/2.", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }

@@ -30,8 +30,6 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         Order order = getItem(position);
-        Log.i(this.getClass().getSimpleName(),""+order);
-
 
         //create an order item
         if(convertView == null) {

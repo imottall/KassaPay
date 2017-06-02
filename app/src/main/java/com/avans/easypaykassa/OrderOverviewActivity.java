@@ -46,7 +46,7 @@ public class OrderOverviewActivity extends AppCompatActivity implements ListView
     @Override
     public void onOrdersAvailable(Order order) {
 
-        Log.i("ORDER", order.toString());
+//        Log.i("ORDER", order.toString());
 
         if (!orderNumbers.isEmpty()){
             if (!orderNumbers.contains(order.getOrderNumber())){
@@ -67,6 +67,8 @@ public class OrderOverviewActivity extends AppCompatActivity implements ListView
         Order order = orders.get(position);
         Intent i = new Intent(this, OrderOverviewDetailActivity.class);
         i.putExtra("order", order);
+        long dateInMillis = order.getDate().getTime();
+        i.putExtra("dateInMillis", dateInMillis);
         startActivity(i);
     }
 }

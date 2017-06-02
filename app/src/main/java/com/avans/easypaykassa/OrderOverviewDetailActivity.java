@@ -56,7 +56,6 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
 
     //variable to get rid of difference in DB order time and actual Dutch time
     private long dateInMillis;
-    private int timeDiff;
 
 
     @Override
@@ -212,9 +211,6 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     public String formatDate(long dateInMillis) {
         //convert long dateInMillis back to Date
         Date date = new Date(dateInMillis);
-
-        //calculate timedifference
-
 
         //format the date
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm - dd/MM/yyyy");

@@ -8,7 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/leftRightMain"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/order_number_textview"
@@ -40,14 +41,28 @@
             android:layout_weight="1">
 
             <CheckBox
-                android:focusable="false"
-                android:id="@+id/order_status_checkbox"
+                android:id="@+id/status_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:buttonTint="@color/colorPrimary"
                 android:clickable="false"
-                android:textSize="14sp" />
+                android:focusable="false"
+                android:textSize="14sp"
+                android:background="@android:color/transparent"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/status_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_x"
+                android:buttonTint="@color/colorPrimary"
+                android:clickable="false"
+                android:focusable="false"
+                android:textSize="14sp"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

@@ -2,18 +2,19 @@ package com.avans.easypaykassa;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avans.easypaykassa.DomainModel.Order;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Felix on 9-3-2017.
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 public class OrderOverviewAdapter extends ArrayAdapter<Order> {
 
     private SharedPreferences locationPref;
+    private CheckBox checkbox;
+    private ImageView xCheckbox;
 
     public OrderOverviewAdapter(Context context, ArrayList<Order> orders) {
         super(context, 0, orders);
@@ -40,21 +43,37 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
         TextView orderNumberOutput = (TextView) convertView.findViewById(R.id.order_number_textview);
         TextView orderLocationOutput = (TextView) convertView.findViewById(R.id.order_location_textview);
         TextView orderDateOutput = (TextView) convertView.findViewById(R.id.order_date_textview);
-        CheckBox orderStatusCheckbox = (CheckBox) convertView.findViewById(R.id.order_status_checkbox);
+        checkbox = (CheckBox) convertView.findViewById(R.id.status_checkbox);
+        xCheckbox = (ImageView) convertView.findViewById(R.id.status_imageview);
 
         //add content to the xml elements
         orderNumberOutput.setText(order.getOrderNumber()+"");
         orderLocationOutput.setText(locationPref.getString(order.getLocation(), "Geen Locatie"));
-        orderDateOutput.setText(order.getDate().toString());
-        String status = order.getStatus();
-        if (status.equals("PAID")) {
-            orderStatusCheckbox.setChecked(true);
-        } else if (status.equals("WAITING")) {
-            orderStatusCheckbox.setChecked(false);
-        } else {
-            orderStatusCheckbox.setButtonDrawable((R.drawable.ic_x));
-        }
+        orderDateOutput.setText(formatDate(order.getDate()));
+        checkStatusForCheckbox(order.getStatus());
 
         return convertView;
+    }
+
+    public void checkStatusForCheckbox(String status) {
+        switch (status) {
+            case "PAID":
+                checkbox.setChecked(true);
+                checkbox.setVisibility(View.VISIBLE);
+                break;
+            case "WAITING":
+                checkbox.setVisibility(View.VISIBLE);
+                checkbox.setChecked(false);
+                break;
+            default:
+                xCheckbox.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    public String formatDate(Date date) {
+        //format the date
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm - dd/MM/yyyy");
+        return sdf.format(date);
     }
 }

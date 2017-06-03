@@ -21,9 +21,7 @@ import com.avans.easypaykassa.HCE.LoyaltyCardReader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import es.dmoral.toasty.Toasty;
 
@@ -139,7 +137,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
             price = price + productList.get(i).getProductPrice();
         }
 
-        total_price.setText("€" + price);
+        total_price.setText("Totaalprijs €" + price);
         adapter.notifyDataSetChanged();
     }
 
@@ -149,9 +147,9 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
         pd.cancel();
 
         Log.i("DetailDateFORMAT", order.getDate()+"");
-        id.setText(order.getOrderNumber() + "");
+        id.setText("Bestelnummer #" + order.getOrderNumber() + "");
         location.setText(order.getLocation());
-        date.setText(formatDate(dateInMillis));
+        date.setText(formatDateFromMillis(dateInMillis));
         //check order status, show adequate view (x/unchecked checkmark/checked checkmark)
         checkStatusForCheckbox(order.getStatus());
 
@@ -208,7 +206,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
         }
     }
 
-    public String formatDate(long dateInMillis) {
+    public String formatDateFromMillis(long dateInMillis) {
         //convert long dateInMillis back to Date
         Date date = new Date(dateInMillis);
 

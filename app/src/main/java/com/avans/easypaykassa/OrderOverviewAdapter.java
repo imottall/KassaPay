@@ -34,6 +34,9 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         Order order = getItem(position);
 
+        long dateInMillis = order.getDate().getTime() + new Double(2.16e+7).longValue();
+        Date date = new Date(dateInMillis);
+
         //create an order item
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.order_overview_list_item, parent, false);
@@ -49,7 +52,7 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
         //add content to the xml elements
         orderNumberOutput.setText(order.getOrderNumber()+"");
         orderLocationOutput.setText(locationPref.getString(order.getLocation(), "Geen Locatie"));
-        orderDateOutput.setText(formatDate(order.getDate()));
+        orderDateOutput.setText(formatDate(date));
         checkStatusForCheckbox(order.getStatus());
 
         return convertView;

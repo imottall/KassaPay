@@ -1,7 +1,9 @@
 package com.avans.easypaykassa;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +39,8 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     private CheckBox checkbox;
     private ImageView xCheckbox;
 
+    private SharedPreferences locationPref;
+
     private double price;
     private ProductAdapter adapter;
 
@@ -61,6 +65,8 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_overview_detail);
+
+        locationPref = getSharedPreferences(LoginActivity.PREFERENCELOCATION, Context.MODE_PRIVATE);
 
         //get orderNumber that has either been received by OrderOverviewActivity or from NFC scan
         order = (Order) getIntent().getSerializableExtra("order");
@@ -132,13 +138,14 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     @Override
     public void onProductAvailable(Product product) {
         price = 0;
+
         productList.add(product);
 
         for (int i = 0; i < productList.size(); i++) {
             price = price + productList.get(i).getProductPrice();
         }
 
-        total_price.setText("Totaalprijs €" + price);
+        total_price.setText("Totaalprijs €" + String.format("%.2f", price));
         adapter.notifyDataSetChanged();
     }
 
@@ -149,7 +156,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
 
         Log.i("DetailDateFORMAT", order.getDate() + "");
         id.setText("Bestelnummer #" + order.getOrderNumber() + "");
-        location.setText(order.getLocation());
+        location.setText(locationPref.getString(order.getLocation(), "Geen locatie"));
         date.setText(formatDateFromMillis(dateInMillis));
         //check order status, show adequate view (x/unchecked checkmark/checked checkmark)
         checkStatusForCheckbox(order.getStatus());

@@ -67,7 +67,7 @@ public class PurchasedProductAdapter extends BaseAdapter {
         }
         Product p = (Product) productsList.get(position);
         String amount = p.getAmount() + "X";
-        String price = ""+p.getProductPrice();
+        String price = String.format("%.2f", p.getProductPrice());
         viewHolder.productImage.setImageResource(R.drawable.ic_local_dining_black_24dp);
         viewHolder.productName.setText(p.getProductName());
         viewHolder.productAmount.setText(amount);

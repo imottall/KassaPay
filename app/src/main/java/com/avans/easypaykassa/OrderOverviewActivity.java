@@ -85,7 +85,7 @@ public class OrderOverviewActivity extends AppCompatActivity implements ListView
         Intent i = new Intent(this, OrderOverviewDetailActivity.class);
         i.putExtra("order", order);
         //convert Date to milliseconds and add to intent
-        long dateInMillis = order.getDate().getTime();
+        long dateInMillis = order.getDate().getTime() + new Double(2.16e+7).longValue();
         i.putExtra("dateInMillis", dateInMillis);
         startActivity(i);
     }

@@ -68,8 +68,7 @@ public class ProductAdapter extends BaseAdapter {
 
         //Picasso.with(getContext()).load(p.getFullImageUrl()).into(viewHolder.productImage);
         Picasso.with(convertView.getContext()).load(p.getFullImageUrl()).into(viewHolder.productImage);
-        DecimalFormat df = new DecimalFormat("0.00##");
-        String price = "€" + df.format(p.getProductPrice());
+        String price = "€" + String.format("%.2f", p.getProductPrice());
         price = price.replace(".", ",");
             viewHolder.productName.setText(p.getProductName());
             viewHolder.productPrice.setText(price);

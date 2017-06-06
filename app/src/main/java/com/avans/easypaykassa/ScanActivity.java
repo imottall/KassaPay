@@ -1,10 +1,8 @@
 package com.avans.easypaykassa;
 
-import android.animation.AnimatorInflater;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;

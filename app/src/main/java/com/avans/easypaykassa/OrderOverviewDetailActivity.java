@@ -3,6 +3,7 @@ package com.avans.easypaykassa;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -65,7 +66,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
         order = (Order) getIntent().getSerializableExtra("order");
         dateInMillis = getIntent().getLongExtra("dateInMillis", 0);
 
-        Log.i("DATE IN LONG", dateInMillis+"");
+        Log.i("DATE IN LONG", dateInMillis + "");
 
         //initialise views
         listview = (ListView) findViewById(R.id.order_detailed_list);
@@ -123,7 +124,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     }
 
     private void getOrder(int orderNumber) {
-        //get
+        //get order data from DB
         String URL = "https://easypayserver.herokuapp.com/api/bestelling/" + orderNumber;
         new EasyPayAPIGETOrderConnector(this).execute(URL);
     }
@@ -146,12 +147,14 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
         //Stop loading screen
         pd.cancel();
 
-        Log.i("DetailDateFORMAT", order.getDate()+"");
+        Log.i("DetailDateFORMAT", order.getDate() + "");
         id.setText("Bestelnummer #" + order.getOrderNumber() + "");
         location.setText(order.getLocation());
         date.setText(formatDateFromMillis(dateInMillis));
         //check order status, show adequate view (x/unchecked checkmark/checked checkmark)
         checkStatusForCheckbox(order.getStatus());
+
+        this.order = order;
 
         //get all products from this order from DB
         for (int i = 0; i < order.getProductsIDs().size(); i++) {
@@ -194,12 +197,11 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     @Override
     public void onAccountReceived(String msg) {
         if (msg.equals("PAID")) {
-            //if order is paid, check the checkbox
-            checkbox.setChecked(true);
 
             //update database, so that the order has a status of 'PAID'
             new EasyPayAPIPUTConnector().execute(URL + order.getOrderNumber() + "/PAID");
             Log.i(this.getClass().getSimpleName(), "RECEIVED ORDERNR: " + order.getOrderNumber());
+            updateCustomerBalance();
 
             //show toasty
             Toasty.success(OrderOverviewDetailActivity.this, "Bestelling is betaald 2/2.", Toast.LENGTH_SHORT).show();
@@ -229,5 +231,14 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
                 xCheckbox.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    public void updateCustomerBalance() {
+        //update database, so that the customer balance is updated
+        String paymentURL = "https://easypayserver.herokuapp.com/api/klant/afrekening/" +
+                order.getCustomerId() + "/" + price;
+        new EasyPayAPIPUTConnector().execute(paymentURL);
+        Log.i(TAG, paymentURL);
+        Log.i(TAG, order.toString());
     }
 }

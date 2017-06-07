@@ -46,6 +46,8 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
 
     private Order order;
 
+    private boolean statusPaid = false;
+
     //NFC attributes
     public static int READER_FLAGS =
             NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK;
@@ -241,11 +243,14 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     }
 
     public void updateCustomerBalance() {
-        //update database, so that the customer balance is updated
-        String paymentURL = "https://easypayserver.herokuapp.com/api/klant/afrekening/" +
-                order.getCustomerId() + "/" + price;
-        new EasyPayAPIPUTConnector().execute(paymentURL);
-        Log.i(TAG, paymentURL);
-        Log.i(TAG, order.toString());
+        if (!statusPaid) {
+            //update database, so that the customer balance is updated
+            String paymentURL = "https://easypayserver.herokuapp.com/api/klant/afrekening/" +
+                    order.getCustomerId() + "/" + price * 100;
+            new EasyPayAPIPUTConnector().execute(paymentURL);
+            Log.i(TAG, paymentURL);
+            Log.i(TAG, order.toString());
+            statusPaid = true;
+        }
     }
 }

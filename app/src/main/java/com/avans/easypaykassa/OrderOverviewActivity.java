@@ -21,7 +21,6 @@ public class OrderOverviewActivity extends AppCompatActivity implements ListView
     private EasyPayAPIOrdersConnector get;
     private ArrayList<Integer> orderNumbers = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

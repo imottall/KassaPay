@@ -34,7 +34,7 @@ public class OverviewCurrentOrdersActivity extends AppCompatActivity {
         subtotal = (TextView) findViewById(R.id.subtotal_text_oco);
 
         for (int i = 0; i < 10; i++) {
-            Product product = new Product("Friet", 1.1, 4,5);
+            Product product = new Product("Friet", 1.1, 4);
             mProductList.add(product);
         }
 

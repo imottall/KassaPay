@@ -18,11 +18,11 @@ public class FoodDeleteTab extends Fragment implements EasyPayAPIConnector.OnPro
 
     private ListView listview_food;
     private ArrayList<ArrayList<Product>> products;
-    private ProductsTotal.OnTotalChanged totalListener = null;
+    private ProductInterface listener = null;
     private DeleteProductAdapter adapter;
 
-    public void setTotalListener(ProductsTotal.OnTotalChanged totalListener){
-        this.totalListener = totalListener;
+    public void setTotalListener(ProductInterface listener){
+        this.listener = listener;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FoodDeleteTab extends Fragment implements EasyPayAPIConnector.OnPro
 
 
 
-        adapter = new DeleteProductAdapter(this.getActivity(), inflater, foodList);
+        adapter = new DeleteProductAdapter(listener, this.getActivity(), inflater, foodList);
         listview_food.setAdapter(adapter);
 
         return rootView;

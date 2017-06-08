@@ -103,7 +103,6 @@ public class EasyPayAPIConnector extends AsyncTask<String, Void, String> {
 
                 //create Product object
                 Product p = new Product(productName, productPrice, productId);
-                Log.i(TAG, "onPostExecute: " + productId);
                 //call back with newly created product
                 listener.onProductAvailable(p);
             }

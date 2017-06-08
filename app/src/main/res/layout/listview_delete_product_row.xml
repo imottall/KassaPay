@@ -22,7 +22,7 @@
         android:layout_marginBottom="10dp"
         android:textSize="17sp"
         android:id="@+id/product_delete_name"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="10dp"
         android:text="Product Name" />
 
     <TextView
@@ -31,15 +31,18 @@
         android:layout_marginTop="10dp"
         android:textSize="17sp"
         android:layout_marginBottom="10dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/product_delete_price"
         android:text="Product Price" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/product_delete_checkbox"/>
+    <ImageView
+        android:id="@+id/product_delete_checkbox"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="13dp"
+        android:layout_marginRight="50dp"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:padding="5sp"
+        />
 
 </LinearLayout>

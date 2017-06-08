@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avans.easypaykassa.DomainModel.Balance;
+import com.avans.easypaykassa.DomainModel.Customer;
 import com.avans.easypaykassa.SQLite.BalanceDAO;
 import com.avans.easypaykassa.SQLite.DAOFactory;
 

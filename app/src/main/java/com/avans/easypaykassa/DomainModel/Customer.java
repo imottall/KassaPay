@@ -12,6 +12,12 @@ public class Customer implements Serializable {
     private Balance balance;
     private String timeLog;
 
+    public Customer(int CustomerId, String lastname, Balance balance){
+        this.customerId = CustomerId;
+        this.lastname = lastname;
+        this.balance = balance;
+    };
+    
     public Customer(int customerId, String username, String password, String email, String firstname,
                     String lastname, String bankAccountNumber, Balance balance, String timeLog) {
         this.customerId = customerId;

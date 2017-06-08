@@ -15,12 +15,18 @@ import com.avans.easypaykassa.SQLite.DAOFactory;
 
 public class CustomerDataActivity extends AppCompatActivity {
 
-    private DAOFactory factory;
-    private BalanceDAO balanceDAO;
-    private ImageView home;
-    private TextView balance;
+     //Creating all the necessary variables
+    TextView name;
+    TextView balance;
+    TextView ID;
+    private Customer customer;
 
-    private Balance b;
+    public CustomerDataActivity(){
+    }
+
+    public CustomerDataActivity(Customer customer){
+        this.customer = customer;
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +56,23 @@ public class CustomerDataActivity extends AppCompatActivity {
             }
         });
 
+        //Getting our textfields
+        name = (TextView) findViewById(R.id.customer_data_name);
+        balance = (TextView) findViewById(R.id.customer_data_balance);
+        ID = (TextView) findViewById(R.id.customer_data_customer_id);
+
+        if(customer != null){
+            name.setText(customer.getLastname());
+            String balanceText = "" + customer.getBalance();
+            String idText = "" + customer.getCustomerId();
+            balance.setText(balanceText);
+            ID.setText(idText);
+        } else{
+            String unavailable = "Unavailable";
+            name.setText(unavailable);
+            balance.setText(unavailable);
+            ID.setText(unavailable);
+        }
     }
 
 

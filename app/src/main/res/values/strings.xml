@@ -104,4 +104,9 @@
     <string name="button_scan">Cancel</string>
     <string name="instructions_scan">Houd uw telefoon tegen de kassa</string>
     <string name="hours_worked_userdata">Uren gewerkt:</string>
+    
+    <!--activity_customer_data-->
+    <string name="customer_data_achternaam">Achternaam:</string>
+    <string name="customer_data_saldo">Saldo:</string>
+    <string name="customer_data_klantID">KlantID:</string>
 </resources>

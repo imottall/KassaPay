@@ -2,6 +2,7 @@ package com.avans.easypaykassa;
 
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -48,6 +49,7 @@ public class AssortmentActivity extends AppCompatActivity implements View.OnClic
                 startActivity(intent);
             }
         });
+
 
     }
 //      Hier mogelijk tags doorgeven vanuit database om assortiment te filteren op locatie

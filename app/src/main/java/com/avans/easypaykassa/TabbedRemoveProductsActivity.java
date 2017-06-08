@@ -1,5 +1,6 @@
 package com.avans.easypaykassa;
 
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -51,8 +52,6 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_local_dining_white_24dp);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_local_drink_white_24dp);
         product_adapter = new DeleteProductAdapter(getApplicationContext(), getLayoutInflater(), productList);
-
-
     }
 
     @Override

@@ -62,7 +62,6 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     //variable to get rid of difference in DB order time and actual Dutch time
     private long dateInMillis;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +128,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
         id.setText("");
         location.setText("");
         date.setText("");
+
     }
 
     private void getOrder(int orderNumber) {
@@ -229,6 +229,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     public void checkStatusForCheckbox(String status) {
         switch (status) {
             case "PAID":
+                xCheckbox.setVisibility(View.INVISIBLE);
                 checkbox.setChecked(true);
                 checkbox.setVisibility(View.VISIBLE);
                 break;

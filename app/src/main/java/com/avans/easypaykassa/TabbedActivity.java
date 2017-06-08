@@ -1,6 +1,7 @@
 package com.avans.easypaykassa;
 
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;

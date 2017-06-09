@@ -84,6 +84,10 @@ public class DeleteProductAdapter extends BaseAdapter {
             viewHolder.productcheck.setImageResource(R.drawable.ic_check_box_outline_blank_black_24dp);
         }
 
+        while (p.isChecked()) {
+            viewHolder.productcheck.setImageResource(R.drawable.ic_check_box_black_24dp);
+        }
+
         viewHolder.productcheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +99,6 @@ public class DeleteProductAdapter extends BaseAdapter {
                     viewHolder.productcheck.setImageResource(R.drawable.ic_check_box_outline_blank_black_24dp);
                     selectedItems.remove(productsList.get(position));
                 }
-                Log.i("TAG", "onClick: " + selectedItems);
                 listener.SelectedItemsListener(selectedItems);
             }
         });

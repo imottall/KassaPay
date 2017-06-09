@@ -32,7 +32,7 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
     protected static DeleteProductAdapter adapter;
     private final ProductInterface listener = this;
     private DeleteProductAdapter product_adapter;
-
+    private EasyPayAPIDELETEConnector putReq;
     private Button btn_confirm, btn_cancel;
 
     @Override
@@ -45,11 +45,13 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
         setSupportActionBar(toolbar);
 
         Bundle bundle = getIntent().getExtras();
-
+        btn_confirm = (Button) findViewById(R.id.alter_amount_confirm);
         mSectionsPagerAdapter = new TabbedRemoveProductsActivity.SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(3);
+        RemoveProductOnClick();
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -92,6 +94,31 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
         }
     }
 
+    public void RemoveProductOnClick() {
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (Product product: mergedProducts) {
+                    int id = product.getProductId();
+                    Log.i("", "ProductID: " + id);
+                    deleteProducts(id);
+                }
+                finish();
+            }
+        });
+    }
+
+    public void deleteProducts(int id) {
+
+        String[] URL = {
+                "https://easypayserver.herokuapp.com/api/product/delproduct/" + id
+                //bij andere locaties zal er iets met de endpoint moeten worden aangepast: "link/api/product/" + tabname
+        };
+
+        putReq = new EasyPayAPIDELETEConnector();
+        putReq.execute(URL);
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -121,7 +148,6 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
             return 3;
         }
 
@@ -151,7 +177,6 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
                 break;
 
         }
-
     }
 
     public ArrayList<Product> combineLists() {

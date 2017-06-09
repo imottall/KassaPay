@@ -66,7 +66,7 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:textSize="17sp"
-            android:id="@+id/henk"
+            android:id="@+id/alter_amount_confirm"
             android:text="@string/balance_refund_confirm"
             android:background="@drawable/button" />
 

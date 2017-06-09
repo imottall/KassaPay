@@ -58,7 +58,6 @@ public class DrinksDeleteTab extends Fragment implements EasyPayAPIConnector.OnP
     public void getProductItems() {
         String[] URL = {
                 "https://easypayserver.herokuapp.com/api/product/drank"
-                //bij andere locaties zal er iets met de endpoint moeten worden aangepast: "link/api/product/" + tabname
         };
 
         new EasyPayAPIConnector(this).execute(URL);

@@ -43,6 +43,7 @@
         android:layout_marginRight="50dp"
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:padding="5sp"
+        android:backgroundTint="@color/colorPrimary"
         />
 
 </LinearLayout>

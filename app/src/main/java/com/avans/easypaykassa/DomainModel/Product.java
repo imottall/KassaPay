@@ -9,18 +9,12 @@ public class Product implements Serializable {
     private double productPrice;
     private int productId;
     private int amount;
+    private boolean isChecked;
 
     public Product(String productName, double productPrice, int productId) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productId = productId;
-    }
-
-    public Product(String productName, double productPrice, int amount, int productId) {
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productId = productId;
-        this.amount = amount;
     }
 
     public String getProductName() {
@@ -54,13 +48,24 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "Product{" +
-                "productName='" + productName  +
+                "productName='" + productName + '\'' +
                 ", productPrice=" + productPrice +
+                ", productId=" + productId +
+                ", amount=" + amount +
+                ", isChecked=" + isChecked +
                 '}';
     }
 
     public String getFullImageUrl() {
         String url = "https://raw.githubusercontent.com/bartaveld/EasyPayImages/master/" + productId + ".png";
         return url;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean val) {
+        this.isChecked = val;
     }
 }

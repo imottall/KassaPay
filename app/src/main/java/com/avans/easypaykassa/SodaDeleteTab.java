@@ -17,11 +17,11 @@ public class SodaDeleteTab extends Fragment implements EasyPayAPIConnector.OnPro
 
     private ListView listview_soda;
     private ArrayList<ArrayList<Product>> products;
-    private ProductsTotal.OnTotalChanged totalListener = null;
+    private ProductInterface listener = null;
     private DeleteProductAdapter adapter;
 
-    public void setTotalListener(ProductsTotal.OnTotalChanged totalListener){
-        this.totalListener = totalListener;
+    public void setTotalListener(ProductInterface listener){
+        this.listener = listener;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class SodaDeleteTab extends Fragment implements EasyPayAPIConnector.OnPro
 
 
 
-        adapter = new DeleteProductAdapter(this.getActivity(), inflater, sodaList);
+        adapter = new DeleteProductAdapter(listener, this.getActivity(), inflater, sodaList);
         listview_soda.setAdapter(adapter);
 
         return rootView;

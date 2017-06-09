@@ -5,11 +5,13 @@ package com.avans.easypaykassa;
  */
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.avans.easypaykassa.DomainModel.Product;
@@ -26,9 +28,11 @@ public class DeleteProductAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
     private ArrayList<Product> productsList;
-    private int amountOfProducts = 0;
+    private ArrayList<Product> selectedItems = new ArrayList<>();
+    private ProductInterface listener;
 
-    public DeleteProductAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> productsList) {
+    public DeleteProductAdapter(ProductInterface listener, Context context, LayoutInflater layoutInflater, ArrayList<Product> productsList) {
+        this.listener = listener;
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.productsList = productsList;
@@ -59,7 +63,7 @@ public class DeleteProductAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.productImage = (ImageView) convertView.findViewById(R.id.product_delete_image);
             viewHolder.productName = (TextView) convertView.findViewById(R.id.product_delete_name);
-            viewHolder.productcheck = (CheckBox) convertView.findViewById(R.id.product_delete_checkbox);
+            viewHolder.productcheck = (ImageView) convertView.findViewById(R.id.product_delete_checkbox);
             viewHolder.productPrice = (TextView) convertView.findViewById(R.id.product_delete_price);
 
             convertView.setTag(viewHolder);
@@ -70,8 +74,34 @@ public class DeleteProductAdapter extends BaseAdapter {
         Product p = (Product) productsList.get(position);
         String amount = p.getAmount() + "X";
         String price = ""+p.getProductPrice();
-        Picasso.with(convertView.getContext()).load(p.getFullImageUrl()).into(viewHolder.productImage);        viewHolder.productName.setText(p.getProductName());
+        Picasso.with(convertView.getContext()).load(p.getFullImageUrl()).into(viewHolder.productImage);
+        viewHolder.productName.setText(p.getProductName());
         viewHolder.productPrice.setText(price);
+
+        if(productsList.get(position).isChecked()) {
+            viewHolder.productcheck.setImageResource(R.drawable.ic_check_box_black_24dp);
+        } else {
+            viewHolder.productcheck.setImageResource(R.drawable.ic_check_box_outline_blank_black_24dp);
+        }
+
+        while (p.isChecked()) {
+            viewHolder.productcheck.setImageResource(R.drawable.ic_check_box_black_24dp);
+        }
+
+        viewHolder.productcheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productsList.get(position).setChecked(!productsList.get(position).isChecked());
+                if (productsList.get(position).isChecked()) {
+                    viewHolder.productcheck.setImageResource(R.drawable.ic_check_box_black_24dp);
+                    selectedItems.add(productsList.get(position));
+                } else {
+                    viewHolder.productcheck.setImageResource(R.drawable.ic_check_box_outline_blank_black_24dp);
+                    selectedItems.remove(productsList.get(position));
+                }
+                listener.SelectedItemsListener(selectedItems);
+            }
+        });
 
         return convertView;
     }
@@ -80,7 +110,7 @@ public class DeleteProductAdapter extends BaseAdapter {
     private static class ViewHolder {
         private ImageView productImage;
         private TextView productName, productPrice;
-        private CheckBox productcheck;
+        private ImageView productcheck;
     }
 }
 

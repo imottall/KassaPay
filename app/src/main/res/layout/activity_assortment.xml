@@ -29,18 +29,23 @@
             android:id="@+id/assortment_view"
             android:layout_width="220dp"
             android:layout_height="62dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button"
             android:text="@string/assortment_view_button" />
 
         <Button
             android:id="@+id/assortment_add"
             android:layout_width="220dp"
             android:layout_height="62dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button"
             android:text="@string/assortment_add_button"/>
 
         <Button
             android:id="@+id/assortment_remove"
             android:layout_width="220dp"
             android:layout_height="62dp"
+            android:background="@drawable/button"
             android:text="@string/assortment_remove_button" />
 
     </LinearLayout>

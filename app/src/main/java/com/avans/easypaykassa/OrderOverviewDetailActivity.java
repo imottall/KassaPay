@@ -22,6 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avans.easypaykassa.ASyncTasks.CustomerDataTask;
+import com.avans.easypaykassa.DomainModel.Customer;
 import com.avans.easypaykassa.DomainModel.Order;
 import com.avans.easypaykassa.DomainModel.Product;
 import com.avans.easypaykassa.HCE.LoyaltyCardReader;
@@ -33,7 +35,7 @@ import java.util.Date;
 import es.dmoral.toasty.Toasty;
 
 public class OrderOverviewDetailActivity extends AppCompatActivity implements EasyPayAPIConnector.OnProductAvailable,
-        EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback {
+        EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback, CustomerDataTask.OnCustomerAvailable {
 
     private String TAG = this.getClass().getSimpleName();
 
@@ -53,7 +55,6 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     private Order order;
 
     private boolean statusPaid = false;
-    private boolean accountReceived = false;
 
     //NFC attributes
     public static int READER_FLAGS =
@@ -113,17 +114,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
             }
         });
 
-        person = (ImageView) findViewById(R.id.person_imageView);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Account test je weet zelf piks").setTitle("Account");
-        final AlertDialog dialog = builder.create();
-        person.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.show();
-            }
-        });
 
         //initialise productlist & fill it with data from DB
         productList = new ArrayList<>();
@@ -173,12 +164,9 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     @Override
     public void onOrdersAvailable(Order order) {
 
-        if (!accountReceived){
-           String url =  "https://easypayserver.herokuapp.com/api/klant/4";
-            //TODO
-        }
-        //Stop loading screen
-        pd.cancel();
+
+        String url =  "http://easypayserver.herokuapp.com/api/kassamedewerker/getcustomer/" + order.getCustomerId();
+        new CustomerDataTask(this).execute(url);
 
         Log.i("DetailDateFORMAT", order.getDate() + "");
         id.setText("Bestelnummer #" + order.getOrderNumber() + "");
@@ -277,5 +265,28 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
             Log.i(TAG, order.toString());
             statusPaid = true;
         }
+    }
+
+    @Override
+    public void onCustomerAvailable(Customer customer) {
+
+
+        person = (ImageView) findViewById(R.id.person_imageView);
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("ID: " + customer.getCustomerId() + "\n" +
+        "Achternaam: " + customer.getLastname() + "\n" +
+        "Saldo: " + "€" + String.format("%.2f", customer.getBalance().getAmount())).setTitle("Klant:");
+        final AlertDialog dialog = builder.create();
+        person.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+
+        //Stop loading screen
+        pd.cancel();
+
     }
 }

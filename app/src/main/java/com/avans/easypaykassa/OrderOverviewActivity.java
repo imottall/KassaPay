@@ -1,7 +1,6 @@
 package com.avans.easypaykassa;
 
 import android.content.Intent;
-import android.nfc.NfcAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,20 +22,17 @@ public class OrderOverviewActivity extends AppCompatActivity implements ListView
 
     private OrderOverviewAdapter adapter;
     private ArrayList<Order> orders = new ArrayList<>();
-    private EasyPayAPIOrdersConnector get;
     private ArrayList<Integer> orderNumbers = new ArrayList<>();
-    private int locationID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_overview);
         Bundle bundle = getIntent().getExtras();
-        locationID = (int) bundle.get(LOCATION);
-        Log.i("LocatieID", "" + locationID);
+        int locationID = (int) bundle.get(LOCATION);
 
         //get orders from DB
-        get = new EasyPayAPIOrdersConnector(this);
+        EasyPayAPIOrdersConnector get = new EasyPayAPIOrdersConnector(this);
         get.execute("https://easypayserver.herokuapp.com/api/bestelling/location/" + locationID);
 
         //initalise toolbar
@@ -92,7 +88,6 @@ public class OrderOverviewActivity extends AppCompatActivity implements ListView
         Order order = orders.get(position);
         Intent i = new Intent(this, OrderOverviewDetailActivity.class);
         i.putExtra("order", order);
-        //convert Date to milliseconds and add to intent
         long dateInMillis = order.getDate().getTime() + new Double(2.16e+7).longValue();
         i.putExtra("dateInMillis", dateInMillis);
         startActivity(i);

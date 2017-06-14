@@ -7,8 +7,12 @@ import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +21,13 @@ import com.avans.easypaykassa.DomainModel.Employee;
 import com.avans.easypaykassa.DomainModel.Location;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static android.R.attr.order;
 
 public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmployeeAvailable,
-        EasyPayAPILocationConnector.OnLocationAvailable {
+        EasyPayAPILocationConnector.OnLocationAvailable, AdapterView.OnItemSelectedListener {
 
     private String TAG = this.getClass().getSimpleName();
 
@@ -28,8 +36,11 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
 
     private CheckBox check;
 
-    private String username, password;
+    private String username, password, location;
     private int loginDelay = 400;
+    private int locationID = 0;
+
+    private Spinner spinnerLocatie;
 
     //Progress Dialog
     ProgressDialog pd;
@@ -45,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
 
     public static final String PREFERENCEEMPLOYEE = "EMPLOYEE";
     public static final String PREFERENCELOCATION = "LOCATION";
+    public static final String LOCATIONID = "locationid";
 
     private EasyPayAPILocationConnector getLocations;
 
@@ -63,8 +75,29 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
 
         locationPref = getSharedPreferences(PREFERENCELOCATION, Context.MODE_PRIVATE);
         locationEdit = locationPref.edit();
+        spinnerLocatie = (Spinner) findViewById(R.id.spinnerLocatie);
 
         getLocations = new EasyPayAPILocationConnector(this);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.spinnerArray, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLocatie.setAdapter(adapter);
+        spinnerLocatie.setOnItemSelectedListener(this);
+
+
+
+    }
+    public int getLocationID() {
+        Map<String, ?> allEntries = locationPref.getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+            if (entry.getValue().equals(location)) {
+                Log.i("Location = ", entry.getKey() + " | " + location);
+                return Integer.parseInt(entry.getKey());
+            }
+        }
+        return -1;
     }
 
     public void loginBtn(View v) {
@@ -85,8 +118,23 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
         }
     }
 
+/*    public void getLocationOrder() {
+        String[] URL = {
+                "https://easypayserver.herokuapp.com/api/afrekening/" + order.getLocation()
+        };
+
+        new EasyPayAPIPUTConnector().execute(URL);
+    }
+    */
+
+
+
+
     //start LoginTask (AsyncTask)
     public void startLoginTask() {
+
+        //locationEdit.putInt("locationId" , locatieSpinner.getText);
+
         new LoginTask(this).execute("https://easypayserver.herokuapp.com/api/kassamedewerker/login/" + username);
     }
 
@@ -137,7 +185,20 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.OnEmpl
         pd.cancel();
 
         Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        i.putExtra(LOCATIONID, locationID);
         startActivity(i);
         finish();
+}
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        location = spinnerLocatie.getSelectedItem().toString();
+        locationID = getLocationID();
+        Log.i("Locatie", location + " " +  locationID);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        //doe niks
     }
 }

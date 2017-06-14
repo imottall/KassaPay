@@ -8,12 +8,17 @@ import java.io.Serializable;
 
 public class Customer implements Serializable {
     private int customerId;
-    private String username, password, email, firstname, lastname, bankAccountNumber;
+    private String username;
+    private String password;
+    private String email;
+    private String firstname;
+    private String lastname;
+    private String bankAccountNumber;
     private Balance balance;
     private String timeLog;
 
-    public Customer(int CustomerId, String lastname, Balance balance){
-        this.customerId = CustomerId;
+    public Customer(int customerId, String lastname, Balance balance){
+        this.customerId = customerId;
         this.lastname = lastname;
         this.balance = balance;
     };
@@ -119,7 +124,7 @@ public class Customer implements Serializable {
         return "Customer{" +
                 "customerId=" + customerId +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", pw='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +

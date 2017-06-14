@@ -5,6 +5,7 @@ import android.nfc.NfcAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -14,6 +15,9 @@ import com.avans.easypaykassa.DomainModel.Order;
 
 import java.util.ArrayList;
 
+import static android.R.attr.order;
+import static com.avans.easypaykassa.MainActivity.LOCATION;
+
 public class OrderOverviewActivity extends AppCompatActivity implements ListView.OnItemClickListener,
         EasyPayAPIOrdersConnector.OnOrdersAvailable{
 
@@ -21,15 +25,19 @@ public class OrderOverviewActivity extends AppCompatActivity implements ListView
     private ArrayList<Order> orders = new ArrayList<>();
     private EasyPayAPIOrdersConnector get;
     private ArrayList<Integer> orderNumbers = new ArrayList<>();
+    private int locationID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_overview);
+        Bundle bundle = getIntent().getExtras();
+        locationID = (int) bundle.get(LOCATION);
+        Log.i("LocatieID", "" + locationID);
 
         //get orders from DB
         get = new EasyPayAPIOrdersConnector(this);
-        get.execute("https://easypayserver.herokuapp.com/api/bestelling/");
+        get.execute("https://easypayserver.herokuapp.com/api/bestelling/location/" + locationID);
 
         //initalise toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);

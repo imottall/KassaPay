@@ -63,14 +63,15 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
             case "PAID":
                 checkbox.setChecked(true);
                 checkbox.setVisibility(View.VISIBLE);
-                xCheckbox.setVisibility(View.INVISIBLE);
+                xCheckbox.setVisibility(View.GONE);
                 break;
             case "WAITING":
-                checkbox.setVisibility(View.VISIBLE);
                 checkbox.setChecked(false);
-                xCheckbox.setVisibility(View.INVISIBLE);
+                checkbox.setVisibility(View.VISIBLE);
+                xCheckbox.setVisibility(View.GONE);
                 break;
-            default:
+            case "CANCELED":
+                checkbox.setVisibility(View.GONE);
                 xCheckbox.setVisibility(View.VISIBLE);
                 break;
         }

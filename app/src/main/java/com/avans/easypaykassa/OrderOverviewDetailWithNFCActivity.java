@@ -1,29 +1,27 @@
 package com.avans.easypaykassa;
 
-import android.app.Dialog;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
-import android.os.Looper;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avans.easypaykassa.ASyncTasks.CustomerDataTask;
-import com.avans.easypaykassa.DomainModel.Customer;
 import com.avans.easypaykassa.DomainModel.Order;
 import com.avans.easypaykassa.DomainModel.Product;
 import com.avans.easypaykassa.HCE.LoyaltyCardReader;
@@ -34,18 +32,16 @@ import java.util.Date;
 
 import es.dmoral.toasty.Toasty;
 
-public class OrderOverviewDetailActivity extends AppCompatActivity implements EasyPayAPIConnector.OnProductAvailable,
-        EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback, CustomerDataTask.OnCustomerAvailable {
+public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implements EasyPayAPIConnector.OnProductAvailable,
+        EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback {
 
     private String TAG = this.getClass().getSimpleName();
 
     private ArrayList<Product> productList;
     private ListView listview;
-    private TextView total_price, id, location, date;
+    private TextView total_price, id, location, date, scanInstructionOutput;
     private CheckBox checkbox;
-    private ImageView xCheckbox;
-    private ImageView person;
-    private Button dialogButton;
+    private ImageView xCheckbox, scanImage1, scanImage2;
 
     private SharedPreferences locationPref;
 
@@ -55,6 +51,8 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     private Order order;
 
     private boolean statusPaid = false;
+
+    private Animation pulse;
 
     //NFC attributes
     public static int READER_FLAGS =
@@ -73,7 +71,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_overview_detail);
+        setContentView(R.layout.activity_order_overview_detail_with_nfc);
 
         locationPref = getSharedPreferences(LoginActivity.PREFERENCELOCATION, Context.MODE_PRIVATE);
 
@@ -89,6 +87,10 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
         id = (TextView) findViewById(R.id.order_number_detailed);
         location = (TextView) findViewById(R.id.order_location_detailed);
         date = (TextView) findViewById(R.id.order_date_detailed);
+        scanInstructionOutput = (TextView) findViewById(R.id.scan_instruction_textview);
+        scanImage1 = (ImageView) findViewById(R.id.scan_image1);
+        scanImage2 = (ImageView) findViewById(R.id.scan_image2);
+
         checkbox = (CheckBox) findViewById(R.id.status_checkbox);
         xCheckbox = (ImageView) findViewById(R.id.status_imageview);
 
@@ -100,7 +102,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OrderOverviewDetailActivity.this, MainActivity.class);
+                Intent intent = new Intent(OrderOverviewDetailWithNFCActivity.this, MainActivity.class);
                 finish();
                 startActivity(intent);
             }
@@ -109,12 +111,15 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrderOverviewDetailActivity.this, ScanActivity.class);
+                Intent intent = new Intent(OrderOverviewDetailWithNFCActivity.this, ScanActivity.class);
                 startActivity(intent);
             }
         });
 
-
+        //start infinite animation, until NFC succeeded
+        pulse = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse);
+        scanImage1.startAnimation(pulse);
+        scanImage2.startAnimation(pulse);
 
         //initialise productlist & fill it with data from DB
         productList = new ArrayList<>();
@@ -163,19 +168,23 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
 
     @Override
     public void onOrdersAvailable(Order order) {
-
-
-        String url =  "http://easypayserver.herokuapp.com/api/kassamedewerker/getcustomer/" + order.getCustomerId();
-        new CustomerDataTask(this).execute(url);
+        this.order = order;
+        //Stop loading screen
+        pd.cancel();
 
         Log.i("DetailDateFORMAT", order.getDate() + "");
         id.setText("Bestelnummer #" + order.getOrderNumber() + "");
         location.setText(locationPref.getString(order.getLocation(), "Geen locatie"));
-        date.setText(formatDateFromMillis(dateInMillis));
+        if (dateInMillis != 0) {
+            date.setText(formatDateFromMillis(dateInMillis));
+        } else {
+            //convert Date to milliseconds and add to intent
+            long dateInMillis = (order.getDate().getTime() + new Double(2.16e+7).longValue()) - (3600000 * 6);
+            date.setText(formatDateFromMillis(dateInMillis));
+        }
         //check order status, show adequate view (x/unchecked checkmark/checked checkmark)
         checkStatusForCheckbox(order.getStatus());
 
-        this.order = order;
 
         //get all products from this order from DB
         for (int i = 0; i < order.getProductsIDs().size(); i++) {
@@ -218,14 +227,15 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     @Override
     public void onAccountReceived(String msg) {
         if (msg.equals("PAID")) {
-
+            order.setStatus("PAID");
             //update database, so that the order has a status of 'PAID'
             new EasyPayAPIPUTConnector().execute(URL + order.getOrderNumber() + "/PAID");
             Log.i(this.getClass().getSimpleName(), "RECEIVED ORDERNR: " + order.getOrderNumber());
             updateCustomerBalance();
 
-            //show toasty
-            Toasty.success(OrderOverviewDetailActivity.this, "Bestelling is betaald 2/2.", Toast.LENGTH_SHORT).show();
+            startActivity(getIntent());
+            finish();
+            Toasty.success(OrderOverviewDetailWithNFCActivity.this, "Bestelling is betaald 2/2.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -241,16 +251,26 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     public void checkStatusForCheckbox(String status) {
         switch (status) {
             case "PAID":
-                xCheckbox.setVisibility(View.INVISIBLE);
-                checkbox.setChecked(true);
                 checkbox.setVisibility(View.VISIBLE);
+                checkbox.setChecked(true);
+                xCheckbox.setVisibility(View.GONE);
+                //remove scan instruction images
+                scanImage1.setVisibility(View.GONE);
+                scanImage2.setVisibility(View.GONE);
+                scanInstructionOutput.setVisibility(View.GONE);
                 break;
             case "WAITING":
                 checkbox.setVisibility(View.VISIBLE);
                 checkbox.setChecked(false);
+                xCheckbox.setVisibility(View.GONE);
                 break;
-            default:
+            case "CANCELED":
+                checkbox.setVisibility(View.GONE);
                 xCheckbox.setVisibility(View.VISIBLE);
+                //remove scan instruction images
+                scanImage1.setVisibility(View.GONE);
+                scanImage2.setVisibility(View.GONE);
+                scanInstructionOutput.setVisibility(View.GONE);
                 break;
         }
     }
@@ -264,29 +284,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
             Log.i(TAG, paymentURL);
             Log.i(TAG, order.toString());
             statusPaid = true;
+            onResume();
         }
-    }
-
-    @Override
-    public void onCustomerAvailable(Customer customer) {
-
-
-        person = (ImageView) findViewById(R.id.person_imageView);
-        
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("ID: " + customer.getCustomerId() + "\n" +
-        "Achternaam: " + customer.getLastname() + "\n" +
-        "Saldo: " + "€" + String.format("%.2f", customer.getBalance().getAmount())).setTitle("Klant:");
-        final AlertDialog dialog = builder.create();
-        person.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.show();
-            }
-        });
-
-        //Stop loading screen
-        pd.cancel();
-
     }
 }

@@ -47,7 +47,7 @@
                     android:text="@string/username_login"
                     android:textStyle="bold"
                     android:textColor="#fff"
-                    android:layout_marginBottom="@dimen/leftRightMain"/>
+                    android:layout_marginBottom="4dp"/>
 
                 <EditText
                     android:backgroundTint="#fff"
@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
-                    android:layout_marginBottom="@dimen/fab_margin"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/edittext"
                     android:padding="4dp"
                     android:textSize="14sp"
@@ -67,7 +67,7 @@
                     android:text="@string/password_login"
                     android:textStyle="bold"
                     android:textColor="#fff"
-                    android:layout_marginBottom="@dimen/leftRightMain"/>
+                    android:layout_marginBottom="4dp"/>
 
                 <EditText
                     android:backgroundTint="#fff"
@@ -75,11 +75,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:layout_marginBottom="@dimen/fab_margin"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/edittext"
                     android:padding="4dp"
                     android:textSize="14sp"
                     android:text="admin" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_location"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    android:layout_marginBottom="4dp"/>
+
+                <Spinner
+                    android:id="@+id/spinnerLocatie"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@color/white"
+                    android:layout_marginBottom="16dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="0dp" />
+
 
                 <Button
                     android:id="@+id/login_btn"
@@ -96,6 +115,7 @@
 
         </RelativeLayout>
     </LinearLayout>
+
 
 
 </RelativeLayout>

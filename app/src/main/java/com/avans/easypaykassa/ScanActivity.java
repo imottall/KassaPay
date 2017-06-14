@@ -115,7 +115,7 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
                 new EasyPayAPIPUTConnector().execute(URL + orderNumber + "/RECEIVED");
 
                 //proceed to OrderOverviewDetailActivity and send order intent extra
-                Intent i = new Intent(getApplicationContext(), OrderOverviewDetailActivity.class);
+                Intent i = new Intent(getApplicationContext(), OrderOverviewDetailWithNFCActivity.class);
                 Order order = new Order();
                 order.setOrderNumber(orderNumber);
                 i.putExtra("order", order);

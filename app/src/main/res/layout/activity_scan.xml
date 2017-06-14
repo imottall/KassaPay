@@ -57,7 +57,7 @@
             android:id="@+id/message_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Laat de klant uw telefoon scannen"
+            android:text="Laat de klant uw telefoon scannen (stap 1/2)"
             android:textAlignment="center"
             android:textSize="24sp" />
     </RelativeLayout>

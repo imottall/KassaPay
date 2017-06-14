@@ -5,6 +5,7 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -12,13 +13,16 @@ import com.avans.easypaykassa.SQLite.BalanceDAO;
 import com.avans.easypaykassa.SQLite.DAOFactory;
 import com.avans.easypaykassa.SQLite.SQLiteDAOFactory;
 
+import static com.avans.easypaykassa.LoginActivity.LOCATIONID;
+
 public class MainActivity extends AppCompatActivity {
 
     private DAOFactory factory;
     private BalanceDAO balanceDAO;
 
     private ImageView logout;
-
+    private int locationID = 0;
+    public static final String LOCATION = "location";
     //Balance balance = new Balance(20.00f, new Date());
 
     @Override
@@ -28,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
 
         factory = new SQLiteDAOFactory(getApplicationContext());
         balanceDAO = factory.createBalanceDAO();
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            locationID = (int) extras.get(LOCATIONID);
+            Log.i("LocatieID", "" + locationID);
+        }
+
+
 
         //Setting up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -68,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void orderButton(View v){
         Intent intent= new Intent(this, OrderOverviewActivity.class);
+        intent.putExtra(LOCATION, locationID);
         startActivity(intent);
     }
 

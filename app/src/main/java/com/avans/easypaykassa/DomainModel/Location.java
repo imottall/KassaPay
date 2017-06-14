@@ -1,10 +1,12 @@
 package com.avans.easypaykassa.DomainModel;
 
+import java.io.Serializable;
+
 /**
  * Created by barti on 02-Jun-17.
  */
 
-public class Location {
+public class Location implements Serializable{
 
     private int id;
     private String name;

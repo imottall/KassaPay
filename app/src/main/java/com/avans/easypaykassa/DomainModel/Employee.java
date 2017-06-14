@@ -1,14 +1,14 @@
 package com.avans.easypaykassa.DomainModel;
 
-/**
- * Created by Felix on 30-5-2017.
- */
-
 public class Employee {
 
     private int employeeId;
-    private String username, password, email,
-            firstname, lastname, bankAccountNumber;
+    private String username;
+    private String password;
+    private String email;
+    private String firstname;
+    private String lastname;
+    private String bankAccountNumber;
     private int hoursWorked;
 
     public Employee(int employeeId, String username, String password,
@@ -92,7 +92,7 @@ public class Employee {
         return "Employee{" +
                 "employeeId=" + employeeId +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", pw='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +

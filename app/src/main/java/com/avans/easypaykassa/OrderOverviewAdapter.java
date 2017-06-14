@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.avans.easypaykassa.LoginActivity.PREFERENCELOCATION;
+
 /**
  * Created by Felix on 9-3-2017.
  */
@@ -28,13 +30,13 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
 
     public OrderOverviewAdapter(Context context, ArrayList<Order> orders) {
         super(context, 0, orders);
-        locationPref = context.getSharedPreferences(LoginActivity.PREFERENCELOCATION, context.MODE_PRIVATE);
+        locationPref = context.getSharedPreferences(PREFERENCELOCATION, context.MODE_PRIVATE);
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
         Order order = getItem(position);
 
-        long dateInMillis = order.getDate().getTime() + new Double(2.16e+7).longValue();
+        long dateInMillis = order.getDate().getTime() + Double.valueOf(2.16e+7).longValue();
         Date date = new Date(dateInMillis);
 
         //create an order item
@@ -50,7 +52,7 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
         xCheckbox = (ImageView) convertView.findViewById(R.id.status_imageview);
 
         //add content to the xml elements
-        orderNumberOutput.setText(order.getOrderNumber()+"");
+        orderNumberOutput.setText((order.getOrderNumber()+"").toString());
         orderLocationOutput.setText(locationPref.getString(order.getLocation(), "Geen Locatie"));
         orderDateOutput.setText(formatDate(date));
         checkStatusForCheckbox(order.getStatus());
@@ -74,6 +76,7 @@ public class OrderOverviewAdapter extends ArrayAdapter<Order> {
                 checkbox.setVisibility(View.GONE);
                 xCheckbox.setVisibility(View.VISIBLE);
                 break;
+            default:
         }
     }
 

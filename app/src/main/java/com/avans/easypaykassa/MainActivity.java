@@ -1,7 +1,9 @@
 package com.avans.easypaykassa;
 
+import android.content.Context;
 import android.content.Intent;
-import android.nfc.NfcAdapter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +14,11 @@ import android.widget.ImageView;
 import com.avans.easypaykassa.SQLite.BalanceDAO;
 import com.avans.easypaykassa.SQLite.DAOFactory;
 import com.avans.easypaykassa.SQLite.SQLiteDAOFactory;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 
 import static com.avans.easypaykassa.LoginActivity.LOCATIONID;
 

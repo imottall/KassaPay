@@ -81,6 +81,14 @@
         <item>10</item>
     </string-array>
 
+    <string-array name="spinnerArray">
+    <item>Likeurpaleis</item>
+    <item>Friettent</item>
+    <item>Koffiehuis</item>
+    <item>Pizzahut</item>
+    <item>Bierplaza</item>
+    </string-array>
+
     <!--Assortment Activity-->
     <string name="assortment_view_button">Assortiment bekijken</string>
     <string name="assortment_alter_button">Hoeveelheid producten wijzigen</string>
@@ -109,4 +117,5 @@
     <string name="customer_data_achternaam">Achternaam:</string>
     <string name="customer_data_saldo">Saldo:</string>
     <string name="customer_data_klantID">KlantID:</string>
+    <string name="select_location">Selecteer locatie</string>
 </resources>

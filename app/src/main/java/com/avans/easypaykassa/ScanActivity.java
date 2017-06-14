@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.avans.easypaykassa.DomainModel.Order;
 import com.avans.easypaykassa.HCE.LoyaltyCardReader;
 
+import java.io.FileOutputStream;
+
 import es.dmoral.toasty.Toasty;
 
 /**

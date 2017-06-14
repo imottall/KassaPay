@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.avans.easypaykassa.DomainModel.Order;
 import com.avans.easypaykassa.HCE.LoyaltyCardReader;
 
+import java.io.FileOutputStream;
+
 import es.dmoral.toasty.Toasty;
 
 /**
@@ -118,6 +120,20 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
                 Intent i = new Intent(getApplicationContext(), OrderOverviewDetailWithNFCActivity.class);
                 Order order = new Order();
                 order.setOrderNumber(orderNumber);
+                
+                //Save the (new) customer id in cache
+                int customerId = order.getCustomerId();
+                String FILENAME = "cid_file";
+                String string = ""+customerId;
+                try {
+                    System.out.println("WERE WRITIN");
+                    FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                    fos.write(string.getBytes());
+                    fos.close();
+                } catch (Exception e){
+                    System.out.println("Error: " + e);
+                }
+                
                 i.putExtra("order", order);
                 startActivity(i);
                 Toasty.success(ScanActivity.this, "Bestelling is ontvangen 1/2.", Toast.LENGTH_SHORT).show();

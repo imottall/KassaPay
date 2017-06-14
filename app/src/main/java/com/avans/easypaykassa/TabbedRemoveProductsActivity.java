@@ -1,6 +1,5 @@
 package com.avans.easypaykassa;
 
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,27 +13,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import com.avans.easypaykassa.DomainModel.Product;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TabbedRemoveProductsActivity extends AppCompatActivity implements View.OnClickListener, ProductInterface {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    private ViewPager mViewPager;
-    private ArrayList<ArrayList<Product>> products;
     private ArrayList<Product> productList;
     private ArrayList<Product> mergedProducts = new ArrayList<>();
     private ArrayList<Product> selectedItems;
     protected static DeleteProductAdapter adapter;
     private final ProductInterface listener = this;
-    private DeleteProductAdapter product_adapter;
-    private EasyPayAPIDELETEConnector putReq;
-    private Button btn_confirm, btn_cancel;
+    private Button btnconfirm;
+    private Button btncancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +37,14 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
         setSupportActionBar(toolbar);
 
         Bundle bundle = getIntent().getExtras();
-        btn_cancel = (Button) findViewById(R.id.alter_amount_cancel);
-        btn_confirm = (Button) findViewById(R.id.alter_amount_confirm);
-        mSectionsPagerAdapter = new TabbedRemoveProductsActivity.SectionsPagerAdapter(getSupportFragmentManager());
+        btncancel = (Button) findViewById(R.id.alter_amount_cancel);
+        btnconfirm = (Button) findViewById(R.id.alter_amount_confirm);
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(3);
-        RemoveProductOnClick();
+        removeProductOnClick();
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -61,9 +52,9 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_local_dining_white_24dp);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_local_drink_white_24dp);
 
-        product_adapter = new DeleteProductAdapter(listener, getApplicationContext(), getLayoutInflater(), productList);
+        DeleteProductAdapter productadapter = new DeleteProductAdapter(listener, getApplicationContext(), getLayoutInflater(), productList);
 
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        btncancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -105,8 +96,8 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
         }
     }
 
-    public void RemoveProductOnClick() {
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
+    public void removeProductOnClick() {
+        btnconfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (Product product: mergedProducts) {
@@ -121,13 +112,13 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
 
     public void deleteProducts(int id) {
 
-        String[] URL = {
+        String[] url = {
                 "https://easypayserver.herokuapp.com/api/product/delproduct/" + id
                 //bij andere locaties zal er iets met de endpoint moeten worden aangepast: "link/api/product/" + tabname
         };
 
-        putReq = new EasyPayAPIDELETEConnector();
-        putReq.execute(URL);
+        EasyPayAPIDELETEConnector putReq = new EasyPayAPIDELETEConnector();
+        putReq.execute(url);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -171,22 +162,18 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
                     return "Eten";
                 case 2:
                     return "Frisdrank";
+                default:
+                    return "Drinken";
             }
-            return null;
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.alter_amount_confirm:
-                finish();
-                break;
-
-            case R.id.alter_amount_cancel:
-                finish();
-                break;
-
+        if(v.getId()== R.id.alter_amount_confirm) {
+            finish();
+        } else if (v.getId()== R.id.alter_amount_cancel){
+            finish();
         }
     }
 

@@ -1,17 +1,21 @@
 package com.avans.easypaykassa;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,6 +42,8 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     private TextView total_price, id, location, date;
     private CheckBox checkbox;
     private ImageView xCheckbox;
+    private ImageView person;
+    private Button dialogButton;
 
     private SharedPreferences locationPref;
 
@@ -47,6 +53,7 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
     private Order order;
 
     private boolean statusPaid = false;
+    private boolean accountReceived = false;
 
     //NFC attributes
     public static int READER_FLAGS =
@@ -106,6 +113,18 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
             }
         });
 
+        person = (ImageView) findViewById(R.id.person_imageView);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Account test je weet zelf piks").setTitle("Account");
+        final AlertDialog dialog = builder.create();
+        person.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+
         //initialise productlist & fill it with data from DB
         productList = new ArrayList<>();
         getOrder(order.getOrderNumber());
@@ -153,6 +172,11 @@ public class OrderOverviewDetailActivity extends AppCompatActivity implements Ea
 
     @Override
     public void onOrdersAvailable(Order order) {
+
+        if (!accountReceived){
+           String url =  "https://easypayserver.herokuapp.com/api/klant/4";
+            //TODO
+        }
         //Stop loading screen
         pd.cancel();
 

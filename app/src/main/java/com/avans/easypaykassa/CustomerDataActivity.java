@@ -9,25 +9,27 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avans.easypaykassa.ASyncTasks.CustomerDataTask;
 import com.avans.easypaykassa.DomainModel.Balance;
 import com.avans.easypaykassa.DomainModel.Customer;
 import com.avans.easypaykassa.SQLite.BalanceDAO;
 import com.avans.easypaykassa.SQLite.DAOFactory;
 
-public class CustomerDataActivity extends AppCompatActivity {
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 
-     //Creating all the necessary variables
+public class CustomerDataActivity extends AppCompatActivity implements CustomerDataTask.OnCustomerAvailable{
+
+    //Creating all the necessary variables
     TextView name;
     TextView balance;
     TextView ID;
-    private Customer customer;
-
-    public CustomerDataActivity(){
-    }
-
-    public CustomerDataActivity(Customer customer){
-        this.customer = customer;
-    }
+    Customer customer;
+    String cId;
+    Bundle bundle;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,24 +59,49 @@ public class CustomerDataActivity extends AppCompatActivity {
             }
         });
 
-        //Getting our textfields
-        name = (TextView) findViewById(R.id.customer_data_name);
-        balance = (TextView) findViewById(R.id.customer_data_balance);
-        ID = (TextView) findViewById(R.id.customer_data_customer_id);
+        try {
+            String FILENAME = "cid_file";
+            File file = getFileStreamPath(FILENAME);
+            if (file.exists()) {
+                System.out.println("File EXISTS");
+                FileInputStream fis = openFileInput(FILENAME);
+                InputStreamReader inputStreamReader = new InputStreamReader(fis);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
 
-        if(customer != null){
-            name.setText(customer.getLastname());
-            String balanceText = "" + customer.getBalance();
-            String idText = "" + customer.getCustomerId();
-            balance.setText(balanceText);
-            ID.setText(idText);
-        } else{
-            String unavailable = "Unavailable";
-            name.setText(unavailable);
-            balance.setText(unavailable);
-            ID.setText(unavailable);
+                while ((receiveString = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(receiveString);
+                }
+
+                fis.close();
+                cId = stringBuilder.toString();
+            }
+        } catch(Exception e){
+            System.out.println("Error: "+ e);
         }
+
+
+        //Getting our textfields
+        name = (TextView) findViewById(R.id.customer_data_lastname);
+        balance = (TextView) findViewById(R.id.customer_data_balance);
+        ID = (TextView) findViewById(R.id.customer_data_id);
+
+        startConnectionTask(cId);
+
+
     }
 
+    private void startConnectionTask(String cid) {
+        new CustomerDataTask(this).execute("https://easypayserver.herokuapp.com/api/kassamedewerker/getcustomer/"+cid);
+    }
 
+    @Override
+    public void onCustomerAvailable(Customer customer) {
+        name.setText(customer.getLastname());
+        String balanceText = "" + customer.getBalance().getAmount();
+        String idText = "" + customer.getCustomerId();
+        balance.setText(balanceText);
+        ID.setText(idText);
+    }
 }

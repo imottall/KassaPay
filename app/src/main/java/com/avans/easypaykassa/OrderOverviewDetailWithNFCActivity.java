@@ -9,6 +9,7 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avans.easypaykassa.ASyncTasks.CustomerDataTask;
+import com.avans.easypaykassa.DomainModel.Customer;
 import com.avans.easypaykassa.DomainModel.Order;
 import com.avans.easypaykassa.DomainModel.Product;
 import com.avans.easypaykassa.HCE.LoyaltyCardReader;
@@ -33,7 +36,7 @@ import java.util.Date;
 import es.dmoral.toasty.Toasty;
 
 public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implements EasyPayAPIConnector.OnProductAvailable,
-        EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback {
+        EasyPayAPIGETOrderConnector.OnOrdersAvailable, LoyaltyCardReader.AccountCallback, CustomerDataTask.OnCustomerAvailable {
 
     private String TAG = this.getClass().getSimpleName();
 
@@ -41,7 +44,7 @@ public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implem
     private ListView listview;
     private TextView total_price, id, location, date, scanInstructionOutput;
     private CheckBox checkbox;
-    private ImageView xCheckbox, scanImage1, scanImage2;
+    private ImageView xCheckbox, scanImage1, scanImage2, person;
 
     private SharedPreferences locationPref;
 
@@ -90,9 +93,11 @@ public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implem
         scanInstructionOutput = (TextView) findViewById(R.id.scan_instruction_textview);
         scanImage1 = (ImageView) findViewById(R.id.scan_image1);
         scanImage2 = (ImageView) findViewById(R.id.scan_image2);
+        person = (ImageView) findViewById(R.id.person_imageView);
 
         checkbox = (CheckBox) findViewById(R.id.status_checkbox);
         xCheckbox = (ImageView) findViewById(R.id.status_imageview);
+
 
         //initalise toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -169,8 +174,9 @@ public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implem
     @Override
     public void onOrdersAvailable(Order order) {
         this.order = order;
-        //Stop loading screen
-        pd.cancel();
+
+        String url =  "http://easypayserver.herokuapp.com/api/kassamedewerker/getcustomer/" + order.getCustomerId();
+        new CustomerDataTask(this).execute(url);
 
         Log.i("DetailDateFORMAT", order.getDate() + "");
         id.setText("Bestelnummer #" + order.getOrderNumber() + "");
@@ -286,5 +292,28 @@ public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implem
             statusPaid = true;
             onResume();
         }
+    }
+
+    @Override
+    public void onCustomerAvailable(Customer customer) {
+
+
+        person = (ImageView) findViewById(R.id.person_imageView);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("ID: " + customer.getCustomerId() + "\n" +
+                "Achternaam: " + customer.getLastname() + "\n" +
+                "Saldo: " + "€" + String.format("%.2f", customer.getBalance().getAmount())).setTitle("Klant:");
+        final AlertDialog dialog = builder.create();
+        person.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+
+        //Stop loading screen
+        pd.cancel();
+
     }
 }

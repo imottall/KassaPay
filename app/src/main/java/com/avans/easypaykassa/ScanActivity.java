@@ -86,7 +86,6 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
     private void enableReaderMode() {
         Log.i(TAG, "Enabling reader mode");
         NfcAdapter nfc = NfcAdapter.getDefaultAdapter(getApplicationContext());
-        nfc.setNdefPushMessage(null, ScanActivity.this);
         if (nfc != null) {
             nfc.enableReaderMode(this, loyaltyCardReader, READER_FLAGS, null);
         }
@@ -95,7 +94,6 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
     private void disableReaderMode() {
         Log.i(TAG, "Disabling reader mode");
         NfcAdapter nfc = NfcAdapter.getDefaultAdapter(getApplicationContext());
-        nfc.setNdefPushMessage(null, ScanActivity.this);
         if (nfc != null) {
             nfc.disableReaderMode(this);
         }

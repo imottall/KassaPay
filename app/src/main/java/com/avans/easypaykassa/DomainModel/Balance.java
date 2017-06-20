@@ -1,12 +1,13 @@
 package com.avans.easypaykassa.DomainModel;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Bart on 2-5-2017.
  */
 
-public class Balance {
+public class Balance implements Serializable {
 
     private float amount;
     private Date timeLog;

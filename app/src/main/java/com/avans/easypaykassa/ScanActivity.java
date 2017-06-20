@@ -118,7 +118,7 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
                 Intent i = new Intent(getApplicationContext(), OrderOverviewDetailWithNFCActivity.class);
                 Order order = new Order();
                 order.setOrderNumber(orderNumber);
-                
+
                 //Save the (new) customer id in cache
                 int customerId = order.getCustomerId();
                 String FILENAME = "cid_file";
@@ -131,7 +131,7 @@ public class ScanActivity extends AppCompatActivity implements LoyaltyCardReader
                 } catch (Exception e){
                     System.out.println("Error: " + e);
                 }
-                
+
                 i.putExtra("order", order);
                 startActivity(i);
                 Toasty.success(ScanActivity.this, "Bestelling is ontvangen 1/2.", Toast.LENGTH_SHORT).show();

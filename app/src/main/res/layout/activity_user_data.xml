@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.avans.easypaykassa.EmployeeDataActivity">
+    tools:context="com.avans.easypaykassa.UserDataActivity">
 
     <include layout="@layout/header" />
 
@@ -58,6 +58,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="16"
                             android:text="Hassan"
+                            android:paddingLeft="2dp"
                             android:textColor="#000"
                             android:textSize="14sp" />
 
@@ -94,6 +95,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="16"
                                 android:text="Geenjassaan"
+                                android:paddingLeft="2dp"
                                 android:textColor="#000"
                                 android:textSize="14sp" />
 
@@ -125,6 +127,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="16"
+                                android:paddingLeft="2dp"
                                 android:text="Jojopay"
                                 android:textColor="#000"
                                 android:textSize="14sp" />

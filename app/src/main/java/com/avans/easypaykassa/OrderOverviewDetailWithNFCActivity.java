@@ -1,22 +1,17 @@
 package com.avans.easypaykassa;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -54,8 +49,6 @@ public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implem
     private Order order;
 
     private boolean statusPaid = false;
-
-    private Animation pulse;
 
     //NFC attributes
     public static int READER_FLAGS =
@@ -120,11 +113,6 @@ public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implem
                 startActivity(intent);
             }
         });
-
-        //start infinite animation, until NFC succeeded
-        pulse = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse);
-        scanImage1.startAnimation(pulse);
-        scanImage2.startAnimation(pulse);
 
         //initialise productlist & fill it with data from DB
         productList = new ArrayList<>();

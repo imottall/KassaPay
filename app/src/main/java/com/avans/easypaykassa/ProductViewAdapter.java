@@ -38,7 +38,7 @@ public class ProductViewAdapter extends BaseAdapter {
             products.add(new ArrayList<Product>());
         }
 
-        this.total = new ProductsTotal(context, products);
+        //this.total = new ProductsTotal(context, products);
 
 
     }

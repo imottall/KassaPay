@@ -3,7 +3,6 @@ package com.avans.easypaykassa;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.NfcAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -29,9 +28,8 @@ import es.dmoral.toasty.Toasty;
 
 public class UserDataActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView firstnameText, lastnameText, usernameText;
     private EditText emailInput, bankNumberInput, hoursWorkedInput;
-    private ImageView emailEditBtn, bankNumberEditBtn, hoursWorkedEditBtn, home;
+    private ImageView emailEditBtn, bankNumberEditBtn, hoursWorkedEditBtn;
 
     private Boolean emailEditable = false;
     private Boolean bankNumberEditable = false;
@@ -68,7 +66,7 @@ public class UserDataActivity extends AppCompatActivity implements View.OnClickL
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        home = (ImageView) findViewById(R.id.home);
+        ImageView home = (ImageView) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,9 +85,9 @@ public class UserDataActivity extends AppCompatActivity implements View.OnClickL
         });
 
         //initialise xml elements
-        firstnameText = (TextView) findViewById(R.id.firstname_textview);
-        lastnameText = (TextView) findViewById(R.id.lastname_textview);
-        usernameText = (TextView) findViewById(R.id.username_textview);
+        TextView firstnameText = (TextView) findViewById(R.id.firstname_textview);
+        TextView lastnameText = (TextView) findViewById(R.id.lastname_textview);
+        TextView usernameText = (TextView) findViewById(R.id.username_textview);
         emailInput = (EditText) findViewById(R.id.email_edittext);
         bankNumberInput = (EditText) findViewById(R.id.banknumber_edittext);
         hoursWorkedInput = (EditText) findViewById(R.id.hours_worked_edittext);

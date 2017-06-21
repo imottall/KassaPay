@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import java.io.FileOutputStream;
 
+import es.dmoral.toasty.Toasty;
+
 /**
  * Created by TB on 5/22/2017.
  */
@@ -34,7 +36,7 @@ public class exception_handler implements Thread.UncaughtExceptionHandler {
                 if(activeNetwork != null) {
                     Log.d("We have a","connection");
                     EasyPayAPIPUTConnector put = new EasyPayAPIPUTConnector();
-                    String url = "https://dashboard.heroku.com/api/error/add_error/" + android.os.Build.VERSION.SDK + "/" + android.os.Build.DEVICE + "/"
+                    String url = "https://easypayserver.herokuapp.com/api/error/add_error/" + android.os.Build.VERSION.SDK + "/" + android.os.Build.DEVICE + "/"
                             + android.os.Build.MODEL + "/" + android.os.Build.PRODUCT + "/" + e;
                     put.execute(url);
                 } else {
@@ -51,7 +53,7 @@ public class exception_handler implements Thread.UncaughtExceptionHandler {
                     }
                 }
                 Looper.prepare();
-                Toast.makeText(context, "We zijn een fout tegengekomen, excuses voor het ongemak.", Toast.LENGTH_LONG).show();
+                Toasty.error(context, "We zijn een fout tegengekomen, excuses voor het ongemak.", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
         }.start();

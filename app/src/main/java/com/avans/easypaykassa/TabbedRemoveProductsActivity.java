@@ -1,5 +1,6 @@
 package com.avans.easypaykassa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
 import com.avans.easypaykassa.DomainModel.Product;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,6 +27,7 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
     private ArrayList<Product> selectedItems;
     protected static DeleteProductAdapter adapter;
     private final ProductInterface listener = this;
+    private ImageView home;
     private Button btnconfirm;
     private Button btncancel;
 
@@ -63,21 +67,32 @@ public class TabbedRemoveProductsActivity extends AppCompatActivity implements V
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_tabbed, menu);
-        return true;
+    protected void onResume() {
+        super.onResume();
+
+        //Setting up the toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        home = (ImageView) findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TabbedRemoveProductsActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        ImageView scan = (ImageView) findViewById(R.id.go_to_scan);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TabbedRemoveProductsActivity.this, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void SelectedItemsListener(ArrayList<Product> selectedItems) {

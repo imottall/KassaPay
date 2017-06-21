@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class TabbedActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private TextView totalProductsView, totalPriceView, category;
     private ArrayList<Product> products;
+    private ImageView home;
     protected static ProductAdapter adapter;
     public static final String PRODUCTS = "products";
 
@@ -55,23 +57,31 @@ public class TabbedActivity extends AppCompatActivity {
         //ProductAdapter product_adapter = new ProductAdapter(this, getApplicationContext(), getLayoutInflater(), productList);
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_tabbed, menu);
-        return true;
-    }
+    protected void onResume() {
+        super.onResume();
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        //Setting up the toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        home = (ImageView) findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TabbedActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        ImageView scan = (ImageView) findViewById(R.id.go_to_scan);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TabbedActivity.this, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

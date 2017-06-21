@@ -16,15 +16,39 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_height="56dp"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat">
 
+            <ImageView
+                android:id="@+id/go_to_scan"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="left"
+                android:src="@drawable/ic_nfc_24dp"
+                android:layout_marginLeft="@dimen/leftRightMain" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@android:color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_title" />
+
+            <ImageView
+                android:id="@+id/home"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_home_24dp"
+                android:layout_marginRight="14dp"/>
         </android.support.v7.widget.Toolbar>
-
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
@@ -36,7 +60,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>

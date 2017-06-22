@@ -88,7 +88,7 @@ public class OrderOverviewActivity extends AppCompatActivity implements ListView
         Order order = orders.get(position);
         Intent i = new Intent(this, OrderOverviewDetailActivity.class);
         i.putExtra("order", order);
-        long dateInMillis = order.getDate().getTime() + Double.valueOf(2.16e+7).longValue();
+        long dateInMillis = order.getDate().getTime() + new Double(2.16e+7).longValue() - (3600000 * 6);
         i.putExtra("dateInMillis", dateInMillis);
         startActivity(i);
     }

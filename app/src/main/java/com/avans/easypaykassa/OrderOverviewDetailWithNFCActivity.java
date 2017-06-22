@@ -278,7 +278,12 @@ public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implem
             Log.i(TAG, paymentURL);
             Log.i(TAG, order.toString());
             statusPaid = true;
-            onResume();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    removeViews();
+                }
+            });
         }
     }
 
@@ -304,4 +309,9 @@ public class OrderOverviewDetailWithNFCActivity extends AppCompatActivity implem
         pd.cancel();
 
     }
+
+    public void removeViews() {
+        scanInstructionOutput.setVisibility(View.GONE);
+        scanImage1.setVisibility(View.GONE);
+        scanImage2.setVisibility(View.GONE);}
 }
